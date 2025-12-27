@@ -1,0 +1,179 @@
+{
+  "model_name": "Model 3: Optimized CPM Model",
+  "total_cost": 13692.586,
+  "total_base_cost": 9760.0,
+  "total_bonus": 3932.5860000000002,
+  "total_instagram_videos": 488,
+  "total_views": 3932586,
+  "cost_per_view": 0.0034818274794244804,
+  "creators": [
+    {
+      "creator_name": "Matt*",
+      "instagram_videos": 73,
+      "total_views": 407164,
+      "total_base_cost": 1460.0,
+      "bonus": 407.164,
+      "total_cost": 1867.164
+    },
+    {
+      "creator_name": "Daniel+",
+      "instagram_videos": 60,
+      "total_views": 551523,
+      "total_base_cost": 1200.0,
+      "bonus": 551.523,
+      "total_cost": 1751.5230000000001
+    },
+    {
+      "creator_name": "Jill",
+      "instagram_videos": 46,
+      "total_views": 222279,
+      "total_base_cost": 920.0,
+      "bonus": 222.279,
+      "total_cost": 1142.279
+    },
+    {
+      "creator_name": "Kiru*",
+      "instagram_videos": 19,
+      "total_views": 652159,
+      "total_base_cost": 380.0,
+      "bonus": 652.159,
+      "total_cost": 1032.159
+    },
+    {
+      "creator_name": "Ivan",
+      "instagram_videos": 41,
+      "total_views": 142246,
+      "total_base_cost": 820.0,
+      "bonus": 142.246,
+      "total_cost": 962.246
+    },
+    {
+      "creator_name": "Arnab*",
+      "instagram_videos": 40,
+      "total_views": 136693,
+      "total_base_cost": 800.0,
+      "bonus": 136.693,
+      "total_cost": 936.693
+    },
+    {
+      "creator_name": "Adam",
+      "instagram_videos": 17,
+      "total_views": 486160,
+      "total_base_cost": 340.0,
+      "bonus": 486.16,
+      "total_cost": 826.1600000000001
+    },
+    {
+      "creator_name": "Huzaifa",
+      "instagram_videos": 30,
+      "total_views": 108695,
+      "total_base_cost": 600.0,
+      "bonus": 108.695,
+      "total_cost": 708.6949999999999
+    },
+    {
+      "creator_name": "JP",
+      "instagram_videos": 19,
+      "total_views": 293574,
+      "total_base_cost": 380.0,
+      "bonus": 293.574,
+      "total_cost": 673.5740000000001
+    },
+    {
+      "creator_name": "Yunski",
+      "instagram_videos": 22,
+      "total_views": 83993,
+      "total_base_cost": 440.0,
+      "bonus": 83.993,
+      "total_cost": 523.9929999999999
+    },
+    {
+      "creator_name": "Riley",
+      "instagram_videos": 21,
+      "total_views": 98757,
+      "total_base_cost": 420.0,
+      "bonus": 98.757,
+      "total_cost": 518.7570000000001
+    },
+    {
+      "creator_name": "Thanush",
+      "instagram_videos": 19,
+      "total_views": 135463,
+      "total_base_cost": 380.0,
+      "bonus": 135.463,
+      "total_cost": 515.463
+    },
+    {
+      "creator_name": "John Sellers",
+      "instagram_videos": 16,
+      "total_views": 119029,
+      "total_base_cost": 320.0,
+      "bonus": 119.029,
+      "total_cost": 439.029
+    },
+    {
+      "creator_name": "Dre",
+      "instagram_videos": 16,
+      "total_views": 64536,
+      "total_base_cost": 320.0,
+      "bonus": 64.536,
+      "total_cost": 384.536
+    },
+    {
+      "creator_name": "Jasper",
+      "instagram_videos": 4,
+      "total_views": 301159,
+      "total_base_cost": 80.0,
+      "bonus": 301.159,
+      "total_cost": 381.159
+    },
+    {
+      "creator_name": "Yaz+",
+      "instagram_videos": 15,
+      "total_views": 21652,
+      "total_base_cost": 300.0,
+      "bonus": 21.652,
+      "total_cost": 321.652
+    },
+    {
+      "creator_name": "Allen",
+      "instagram_videos": 11,
+      "total_views": 16221,
+      "total_base_cost": 220.0,
+      "bonus": 16.221,
+      "total_cost": 236.221
+    },
+    {
+      "creator_name": "Kevin Rhee",
+      "instagram_videos": 10,
+      "total_views": 26956,
+      "total_base_cost": 200.0,
+      "bonus": 26.956,
+      "total_cost": 226.956
+    },
+    {
+      "creator_name": "Gustavo",
+      "instagram_videos": 9,
+      "total_views": 40043,
+      "total_base_cost": 180.0,
+      "bonus": 40.043,
+      "total_cost": 220.043
+    },
+    {
+      "creator_name": "Ann",
+      "instagram_videos": 0,
+      "total_views": 22228,
+      "total_base_cost": 0.0,
+      "bonus": 22.228,
+      "total_cost": 22.228
+    },
+    {
+      "creator_name": "Nevin+",
+      "instagram_videos": 0,
+      "total_views": 2056,
+      "total_base_cost": 0.0,
+      "bonus": 2.056,
+      "total_cost": 2.056
+    }
+  ]
+}
