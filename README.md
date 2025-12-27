@@ -11,10 +11,8 @@ pricingmodel/
 │   └── export_dashboard_data.py # Generate JSON data for dashboard
 ├── api/                    # Vercel serverless functions
 │   └── process_csv.py     # API endpoint to process CSV uploads
-├── data/                   # Data files (CSV and JSON)
-│   ├── videos_*.csv       # Input video data (not committed)
-│   ├── creator_statistics.csv # Generated creator statistics
-│   └── model*.json        # Generated model data for dashboard
+├── data/                   # Data files (not committed to git)
+│   └── (generated from CSV uploads, excluded via .gitignore)
 ├── web/                    # Web dashboard
 │   └── dashboard.html     # Interactive dashboard UI with CSV upload
 ├── start_dashboard.py     # Start the dashboard server
@@ -30,14 +28,14 @@ python3 start_dashboard.py
 ```
 
 This will:
-1. Generate all model data files
-2. Start a local web server
-3. Open the dashboard in your browser
+1. Start a local web server
+2. Open the dashboard in your browser
 
 The dashboard will be available at: `http://localhost:8000/web/dashboard.html`
 
 **Using CSV Upload:**
 - Upload your viral.app CSV file directly through the dashboard interface
-- No need to commit CSV data to the repository
-- Data is processed on-the-fly via the API endpoint
+- Data is processed on-the-fly and automatically generates all model calculations
+- No data files are stored or committed to the repository
+- CSV upload is the only way to generate dashboard data
 

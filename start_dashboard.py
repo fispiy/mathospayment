@@ -16,21 +16,10 @@ def main():
     project_root = Path(__file__).parent
     sys.path.insert(0, str(project_root / 'src'))
     
-    # Generate data files first
-    print("Generating data files...")
-    from export_dashboard_data import generate_model_1_data, generate_model_2_data, generate_model_3_data, generate_model_4_data
-    
-    try:
-        generate_model_1_data()
-        generate_model_2_data()
-        generate_model_3_data()
-        generate_model_4_data()
-        print("✓ Data files generated successfully\n")
-    except Exception as e:
-        print(f"Error generating data: {e}")
-        import traceback
-        traceback.print_exc()
-        sys.exit(1)
+    # Note: Data files are now generated via CSV upload in the dashboard
+    # No need to generate them upfront
+    print("Dashboard server starting...")
+    print("Note: Upload a CSV file through the dashboard to generate data.\n")
     
     # Start web server
     PORT = 8000

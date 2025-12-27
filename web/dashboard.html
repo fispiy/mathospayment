@@ -446,39 +446,31 @@
                 btn.textContent = 'View Model Details';
             }
             
-            // Show loading
-            document.getElementById('content').innerHTML = '<div class="loading">Loading...</div>';
+            // Check if we have data for this model
+            let data = null;
+            if (modelNum === 1 && model1Data) {
+                data = model1Data;
+            } else if (modelNum === 2 && model2Data) {
+                data = model2Data;
+            } else if (modelNum === 3 && model3Data) {
+                data = model3Data;
+            } else if (modelNum === 4 && model4Data) {
+                data = model4Data;
+            }
             
-            // Load data
-            const filename = `/data/model${modelNum}_data.json`;
-            fetch(filename)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error(`Failed to load ${filename}. Please run: python3 src/export_dashboard_data.py`);
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    if (modelNum === 1) {
-                        model1Data = data;
-                    } else if (modelNum === 2) {
-                        model2Data = data;
-                    } else if (modelNum === 3) {
-                        model3Data = data;
-                    } else {
-                        model4Data = data;
-                    }
-                    renderModel(data, modelNum);
-                })
-                .catch(error => {
-                    document.getElementById('content').innerHTML = 
-                        `<div class="error">
-                            <strong>Error loading data:</strong><br>
-                            ${error.message}<br><br>
-                            <strong>To fix this:</strong><br>
-                            Run: <code>python3 src/export_dashboard_data.py</code> in the terminal
-                        </div>`;
-                });
+            if (data) {
+                renderModel(data, modelNum);
+            } else {
+                // Show upload prompt
+                document.getElementById('content').innerHTML = 
+                    `<div class="error" style="text-align: center; padding: 60px;">
+                        <h2 style="margin-bottom: 20px;">No Data Available</h2>
+                        <p style="margin-bottom: 30px;">Please upload a CSV file to generate dashboard data.</p>
+                        <label for="csvFile" class="csv-upload-label" style="font-size: 1.1em; padding: 15px 30px; cursor: pointer;">
+                            Upload CSV File
+                        </label>
+                    </div>`;
+            }
         }
         
         function renderModel(data, modelNum) {
@@ -746,7 +738,10 @@
         }
         
         // Load Model 1 by default
-        window.onload = () => loadModel(1);
+        window.onload = () => {
+            // Show upload prompt on initial load
+            loadModel(1);
+        };
     </script>
 </body>
 </html>

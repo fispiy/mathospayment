@@ -1,1 +1,4 @@
+# Data files - all generated from CSV uploads
 data/*.csv
+data/*.json
+data/creator_statistics.csv
