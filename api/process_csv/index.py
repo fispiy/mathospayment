@@ -5,7 +5,7 @@ from pathlib import Path
 from io import StringIO
 
 # Add src to path
-project_root = Path(__file__).parent.parent
+project_root = Path(__file__).parent.parent.parent
 sys.path.insert(0, str(project_root / 'src'))
 
 from calculate_costs import (
@@ -140,7 +140,6 @@ def process_csv_to_statistics(csv_content):
     
     # Deduplicate videos across platforms for each creator - match analyze_videos.py exactly
     creators_data = []
-    creator_videos_dict = {}
     creator_videos_for_performance = {}
     
     for creator_name, stats in creator_stats.items():
@@ -182,9 +181,6 @@ def process_csv_to_statistics(csv_content):
             
             # Store videos for performance models (with top platform views)
             creator_videos_for_performance[creator_name] = performance_videos
-            
-            # Store all unique videos for other uses
-            creator_videos_dict[creator_name] = unique_videos
     
     return creators_data, creator_videos_for_performance
 
@@ -341,3 +337,4 @@ def handler(req):
             'headers': {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'},
             'body': json.dumps({'error': error_msg, 'traceback': error_trace})
         }
+

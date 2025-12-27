@@ -7,10 +7,6 @@
     {
       "source": "/data/:path*",
       "destination": "/data/:path*"
-    },
-    {
-      "source": "/api/:path*",
-      "destination": "/api/:path*"
     }
   ],
   "headers": [
