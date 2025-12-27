@@ -148,10 +148,11 @@ def create_optimized_cpm_model() -> FinancialModel:
     
     # Simplified bonus tiers based on 1 CPM calculation
     # Example: 100K views = $100, 500K views = $500, 1M views = $1,000
+    # Note: Actual calculation uses direct CPM formula: (views / 1000) * $1
+    # Cap: Maximum bonus capped at $1,200 (applies at 1M+ views)
+    # These tiers are for reference/documentation only - actual calculation is done directly
     bonus_tiers = [
-        PricingTier(min_views=5000000, bonus=5000.0, name="5M+ views (capped)"),
-        PricingTier(min_views=3000000, bonus=3000.0, name="3M+ views"),
-        PricingTier(min_views=1000000, bonus=1000.0, name="1M+ views"),
+        PricingTier(min_views=1000000, bonus=1200.0, name="1M+ views (capped at $1,200)"),
         PricingTier(min_views=500000, bonus=500.0, name="500K+ views"),
         PricingTier(min_views=250000, bonus=250.0, name="250K+ views"),
         PricingTier(min_views=100000, bonus=100.0, name="100K+ views"),
@@ -252,8 +253,8 @@ def calculate_creator_financials(
     if model.name == "Optimized CPM Model":
         # 1 CPM = $1 per 1,000 views
         bonus = (total_views / 1000.0) * 1.0
-        # Cap at 5M views ($5,000)
-        bonus = min(bonus, 5000.0)
+        # Cap at $1,200 (applies at 1M+ views)
+        bonus = min(bonus, 1200.0)
     else:
         bonus = model.calculate_bonus(total_views)
     
