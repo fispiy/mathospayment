@@ -52,6 +52,50 @@
             font-weight: 300;
         }
         
+        .csv-upload {
+            margin-top: 20px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+        }
+        
+        .csv-upload input[type="file"] {
+            display: none;
+        }
+        
+        .csv-upload-label {
+            display: inline-block;
+            padding: 10px 20px;
+            background: white;
+            color: #000;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: background 0.2s;
+        }
+        
+        .csv-upload-label:hover {
+            background: #f5f5f5;
+        }
+        
+        .csv-upload-status {
+            margin-top: 10px;
+            font-size: 0.85em;
+            opacity: 0.9;
+        }
+        
+        .csv-upload-status.processing {
+            color: #ffd700;
+        }
+        
+        .csv-upload-status.success {
+            color: #4caf50;
+        }
+        
+        .csv-upload-status.error {
+            color: #f44336;
+        }
+        
         .model-selector {
             display: flex;
             gap: 0;
@@ -283,6 +327,11 @@
         <div class="header">
             <h1>Financial Model Dashboard</h1>
             <p>Compare pricing models and visualize creator costs</p>
+            <div class="csv-upload">
+                <label for="csvFile" class="csv-upload-label">Upload CSV Data</label>
+                <input type="file" id="csvFile" accept=".csv" />
+                <div id="csvStatus" class="csv-upload-status"></div>
+            </div>
         </div>
         
         <div class="model-selector">
@@ -319,6 +368,64 @@
         let model3Data = null;
         let model4Data = null;
         
+        // CSV upload handler
+        document.getElementById('csvFile').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            
+            const statusEl = document.getElementById('csvStatus');
+            statusEl.textContent = 'Processing CSV...';
+            statusEl.className = 'csv-upload-status processing';
+            
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                const csvContent = event.target.result;
+                
+                // Send to API
+                fetch('/api/process_csv', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ csv: csvContent })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        statusEl.textContent = 'Error: ' + data.error;
+                        statusEl.className = 'csv-upload-status error';
+                        return;
+                    }
+                    
+                    // Store the data
+                    model1Data = data.model1;
+                    model2Data = data.model2;
+                    model3Data = data.model3;
+                    model4Data = data.model4;
+                    
+                    // Render current model
+                    renderModel(data['model' + currentModel], currentModel);
+                    
+                    statusEl.textContent = 'CSV processed successfully!';
+                    statusEl.className = 'csv-upload-status success';
+                    
+                    // Clear file input
+                    e.target.value = '';
+                })
+                .catch(error => {
+                    statusEl.textContent = 'Error: ' + error.message;
+                    statusEl.className = 'csv-upload-status error';
+                });
+            };
+            
+            reader.onerror = function() {
+                statusEl.textContent = 'Error reading file';
+                statusEl.className = 'csv-upload-status error';
+            };
+            
+            reader.readAsText(file);
+        });
+        
         function loadModel(modelNum) {
             currentModel = modelNum;
             
@@ -343,7 +450,7 @@
             document.getElementById('content').innerHTML = '<div class="loading">Loading...</div>';
             
             // Load data
-            const filename = `../data/model${modelNum}_data.json`;
+            const filename = `/data/model${modelNum}_data.json`;
             fetch(filename)
                 .then(response => {
                     if (!response.ok) {

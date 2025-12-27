@@ -1,0 +1,32 @@
+{
+  "rewrites": [
+    {
+      "source": "/",
+      "destination": "/web/dashboard.html"
+    },
+    {
+      "source": "/data/:path*",
+      "destination": "/data/:path*"
+    },
+    {
+      "source": "/api/:path*",
+      "destination": "/api/:path*"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/data/(.*)",
+      "headers": [
+        {
+          "key": "Access-Control-Allow-Origin",
+          "value": "*"
+        },
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        }
+      ]
+    }
+  ]
+}
+
