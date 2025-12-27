@@ -1,0 +1,4 @@
+# Python dependencies for Vercel serverless functions
+# Note: Vercel Python runtime includes standard library modules
+# Only add external packages if needed
+

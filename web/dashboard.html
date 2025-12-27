@@ -382,14 +382,33 @@
                 const csvContent = event.target.result;
                 
                 // Send to API
-                fetch('/api/process_csv', {
+                const apiUrl = '/api/process_csv';
+                fetch(apiUrl, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({ csv: csvContent })
                 })
-                .then(response => response.json())
+                .then(response => {
+                    // Check if we got HTML (error page) instead of JSON
+                    const contentType = response.headers.get('content-type') || '';
+                    if (!contentType.includes('application/json')) {
+                        return response.text().then(text => {
+                            // If it's HTML, it's likely a 404 or error page
+                            if (text.trim().startsWith('<!DOCTYPE') || text.trim().startsWith('<html')) {
+                                throw new Error('API endpoint not found. Make sure you are running on Vercel or have the API server running locally.');
+                            }
+                            throw new Error(`Expected JSON but got ${contentType}. Response: ${text.substring(0, 200)}`);
+                        });
+                    }
+                    if (!response.ok) {
+                        return response.text().then(text => {
+                            throw new Error(`API error ${response.status}: ${text.substring(0, 200)}`);
+                        });
+                    }
+                    return response.json();
+                })
                 .then(data => {
                     if (data.error) {
                         statusEl.textContent = 'Error: ' + data.error;

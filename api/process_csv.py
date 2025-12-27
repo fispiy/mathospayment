@@ -53,8 +53,47 @@ def deduplicate_videos(videos_list):
     
     return unique_videos
 
+def deduplicate_videos_for_performance(videos_list):
+    """Deduplicate videos for performance-based model - find top-performing platform for each unique video."""
+    import re
+    from collections import defaultdict
+    
+    if not videos_list:
+        return []
+    
+    def normalize_caption(caption):
+        if not caption:
+            return ""
+        return " ".join(caption.lower().split())
+    
+    # Group videos by signature (caption + date + duration) - match calculate_costs.py
+    video_groups = {}
+    
+    for video in videos_list:
+        caption = normalize_caption(video.get('caption', ''))
+        date_str = video.get('publishedDate', '')
+        date_key = date_str[:10] if date_str else ''
+        duration = safe_int(video.get('durationSeconds', 0))
+        views = video.get('views', safe_int(video.get('viewCount', 0)))
+        
+        # Create signature
+        signature = (caption, date_key, duration)
+        
+        if signature not in video_groups:
+            video_groups[signature] = []
+        video_groups[signature].append(video)
+    
+    # For each group, find the top-performing platform
+    unique_videos = []
+    for signature, group_videos in video_groups.items():
+        # Find the video with highest views (top-performing platform)
+        top_video = max(group_videos, key=lambda v: v.get('views', 0))
+        unique_videos.append(top_video)
+    
+    return unique_videos
+
 def process_csv_to_statistics(csv_content):
-    """Process CSV content and return creator statistics."""
+    """Process CSV content and return creator statistics - matches analyze_videos.py exactly."""
     registry = create_registry()
     
     creator_stats = defaultdict(lambda: {
@@ -66,14 +105,16 @@ def process_csv_to_statistics(csv_content):
         'platforms': set(),
     })
     
-    # Parse CSV
+    # Parse CSV - match analyze_videos.py exactly
     reader = csv.DictReader(StringIO(csv_content))
     
     for row in reader:
+        # Get video data
         video_url = row.get('videoUrl', '')
         account_username = row.get('accountUsername', '')
         account_display_name = row.get('accountDisplayName', '')
         
+        # Match to creator
         creator = match_video_to_creator(
             registry,
             video_url=video_url,
@@ -83,73 +124,115 @@ def process_csv_to_statistics(csv_content):
         
         if creator:
             creator_name = creator.name
-            stats = creator_stats[creator_name]
+            
+            # Add creator name to row for deduplication
             row_with_creator = row.copy()
             row_with_creator['creator_name'] = creator_name
+            
+            # Collect stats - sum views across ALL platforms for bonus calculation
+            stats = creator_stats[creator_name]
             stats['videos'].append(row_with_creator)
-            stats['total_views'] += safe_int(row.get('viewCount', 0))
+            stats['total_views'] += safe_int(row.get('viewCount', 0))  # Summed across all platforms
             stats['total_likes'] += safe_int(row.get('likeCount', 0))
             stats['total_comments'] += safe_int(row.get('commentCount', 0))
             stats['total_shares'] += safe_int(row.get('shareCount', 0))
             stats['platforms'].add(row.get('platform', ''))
     
-    # Convert to list format with deduplication
+    # Deduplicate videos across platforms for each creator - match analyze_videos.py exactly
     creators_data = []
     creator_videos_dict = {}
+    creator_videos_for_performance = {}
     
     for creator_name, stats in creator_stats.items():
-        videos = stats['videos']
-        
-        # Deduplicate videos
-        unique_videos = deduplicate_videos(videos)
-        instagram_videos = [v for v in unique_videos if v.get('platform', '').lower() == 'instagram']
-        
-        creators_data.append({
-            'creator_name': creator_name,
-            'instagram_videos': len(instagram_videos),
-            'total_videos': len(unique_videos),
-            'total_views': stats['total_views'],
-            'avg_views': stats['total_views'] / len(unique_videos) if unique_videos else 0,
-        })
-        
-        creator_videos_dict[creator_name] = unique_videos
+        if stats['videos']:
+            # Get all videos
+            all_videos = stats['videos']
+            
+            # Deduplicate all videos (across all platforms)
+            unique_videos = deduplicate_videos(all_videos)
+            
+            # Filter Instagram videos only (from ALL videos, not deduplicated)
+            instagram_videos = [v for v in all_videos if v.get('platform', '').lower() == 'instagram']
+            
+            # Deduplicate Instagram videos only (for base rate calculation)
+            unique_instagram_videos = deduplicate_videos(instagram_videos)
+            
+            # Format videos for performance models (need 'views' key)
+            performance_videos_raw = []
+            for video in all_videos:
+                performance_videos_raw.append({
+                    'platform': video.get('platform', '').lower(),
+                    'views': safe_int(video.get('viewCount', 0)),
+                    'caption': video.get('caption', ''),
+                    'publishedDate': video.get('publishedDate', ''),
+                    'durationSeconds': video.get('durationSeconds', ''),
+                    'videoUrl': video.get('videoUrl', ''),
+                })
+            
+            # For performance models, use deduplicate_videos_for_performance
+            performance_videos = deduplicate_videos_for_performance(performance_videos_raw)
+            
+            creators_data.append({
+                'creator_name': creator_name,
+                'instagram_videos': len(unique_instagram_videos),  # Deduplicated Instagram videos
+                'total_videos': len(unique_videos),  # All unique videos
+                'total_views': stats['total_views'],  # Summed across all platforms
+                'avg_views': stats['total_views'] / len(unique_videos) if unique_videos else 0,
+            })
+            
+            # Store videos for performance models (with top platform views)
+            creator_videos_for_performance[creator_name] = performance_videos
+            
+            # Store all unique videos for other uses
+            creator_videos_dict[creator_name] = unique_videos
     
-    return creators_data, creator_videos_dict
+    return creators_data, creator_videos_for_performance
 
-def handler(request):
+def handler(req):
     """Vercel serverless function handler."""
-    # Handle CORS preflight
-    if request.get('method') == 'OPTIONS':
-        return {
-            'statusCode': 200,
-            'headers': {
-                'Access-Control-Allow-Origin': '*',
-                'Access-Control-Allow-Methods': 'POST, OPTIONS',
-                'Access-Control-Allow-Headers': 'Content-Type',
-            },
-            'body': ''
-        }
-    
-    if request.get('method') != 'POST':
-        return {
-            'statusCode': 405,
-            'headers': {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'},
-            'body': json.dumps({'error': 'Method not allowed'})
-        }
-    
     try:
+        # Handle different request formats (Vercel can pass Request object or dict)
+        if hasattr(req, 'method'):
+            method = req.method
+            body = req.body if hasattr(req, 'body') else ''
+        elif isinstance(req, dict):
+            method = req.get('method', req.get('httpMethod', 'GET'))
+            body = req.get('body', '')
+        else:
+            method = 'GET'
+            body = ''
+        
+        # Handle CORS preflight
+        if method == 'OPTIONS':
+            return {
+                'statusCode': 200,
+                'headers': {
+                    'Access-Control-Allow-Origin': '*',
+                    'Access-Control-Allow-Methods': 'POST, OPTIONS',
+                    'Access-Control-Allow-Headers': 'Content-Type',
+                },
+                'body': ''
+            }
+        
+        if method != 'POST':
+            return {
+                'statusCode': 405,
+                'headers': {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'},
+                'body': json.dumps({'error': 'Method not allowed. Use POST.'})
+            }
+        
         # Get CSV data from request body
-        body = request.get('body', '')
-        if isinstance(body, dict):
-            csv_content = body.get('csv', '')
-        elif isinstance(body, str):
+        if isinstance(body, bytes):
+            body = body.decode('utf-8')
+        
+        if isinstance(body, str):
             try:
                 parsed = json.loads(body)
                 csv_content = parsed.get('csv', body)
             except:
                 csv_content = body
         else:
-            csv_content = body.decode('utf-8') if isinstance(body, bytes) else str(body)
+            csv_content = str(body) if body else ''
         
         if not csv_content:
             return {
@@ -159,7 +242,7 @@ def handler(request):
             }
         
         # Process CSV
-        creators_data, creator_videos_dict = process_csv_to_statistics(csv_content)
+        creators_data, creator_videos_for_performance = process_csv_to_statistics(csv_content)
         
         if not creators_data:
             return {
@@ -175,11 +258,12 @@ def handler(request):
         model3 = create_optimized_cpm_model()
         financials3 = calculate_all_creators(model3, creators_data, follower_counts=None, period_type="signed")
         
+        # For performance models, use videos with top platform views
         model2 = create_performance_model()
-        financials2 = calculate_all_creators_performance(model2, creator_videos_dict)
+        financials2 = calculate_all_creators_performance(model2, creator_videos_for_performance)
         
         model4 = create_minimum_base_model()
-        financials4 = calculate_all_creators_performance(model4, creator_videos_dict)
+        financials4 = calculate_all_creators_performance(model4, creator_videos_for_performance)
         
         # Format results
         def format_model1_data(financials):
@@ -251,8 +335,9 @@ def handler(request):
     except Exception as e:
         import traceback
         error_msg = str(e)
+        error_trace = traceback.format_exc()
         return {
             'statusCode': 500,
             'headers': {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'},
-            'body': json.dumps({'error': error_msg})
+            'body': json.dumps({'error': error_msg, 'traceback': error_trace})
         }
