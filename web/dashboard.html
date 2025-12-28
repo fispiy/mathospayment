@@ -297,6 +297,8 @@
                 <option value="2">10k Minimum</option>
                 <option value="3">Lowered Current Model</option>
                 <option value="4">5k Minimum</option>
+                <option value="5">2k Minimum</option>
+                <option value="6">3k Minimum Base</option>
             </select>
             <button class="details-btn" onclick="toggleModelDetails()">View Model</button>
         </div>
@@ -316,6 +318,8 @@
         let model2Data = null;
         let model3Data = null;
         let model4Data = null;
+        let model5Data = null;
+        let model6Data = null;
         
         function loadModel(modelNum) {
             currentModel = modelNum;
@@ -347,8 +351,12 @@
                         model2Data = data;
                     } else if (modelNum === 3) {
                         model3Data = data;
-                    } else {
+                    } else if (modelNum === 4) {
                         model4Data = data;
+                    } else if (modelNum === 5) {
+                        model5Data = data;
+                    } else {
+                        model6Data = data;
                     }
                     renderModel(data, modelNum);
                 })
@@ -374,7 +382,7 @@
             html += '<div class="summary">';
             html += '<div class="summary-grid">';
             
-            if (modelNum === 1 || modelNum === 3) {
+            if (modelNum === 1 || modelNum === 3 || modelNum === 6) {
                 html += `
                     <div class="summary-card">
                         <h3>Total Monthly Cost</h3>
@@ -445,7 +453,7 @@
                 html += '<tr>';
                 html += `<td>${creator.creator_name}</td>`;
                 
-                if (modelNum === 1 || modelNum === 3) {
+                if (modelNum === 1 || modelNum === 3 || modelNum === 6) {
                     html += `<td class="number">${formatNumber(creator.instagram_videos)}</td>`;
                     html += `<td class="number">${formatNumber(creator.total_views)}</td>`;
                     html += `<td class="number">$${formatNumber(creator.total_base_cost)}</td>`;
@@ -575,7 +583,7 @@
                 html += '<tr><td>&lt; 20,000</td><td>Proportional (views ÷ 1000)</td></tr>';
                 html += '</tbody></table>';
                 html += '</div>';
-            } else {
+            } else if (modelNum === 4) {
                 html += '<h2>5k Minimum</h2>';
                 
                 html += '<div class="model-details-section">';
@@ -601,6 +609,67 @@
                 html += '<tr><td>50,000 - 99,999</td><td>$150</td></tr>';
                 html += '<tr><td>5,000 - 49,999</td><td>$50</td></tr>';
                 html += '<tr><td>&lt; 5,000</td><td>$0 (No compensation)</td></tr>';
+                html += '</tbody></table>';
+                html += '</div>';
+            } else if (modelNum === 5) {
+                html += '<h2>2k Minimum</h2>';
+                
+                html += '<div class="model-details-section">';
+                html += '<h3>Compensation Structure</h3>';
+                html += '<p>Creators are compensated based on the performance of each individual published video.</p>';
+                html += '<p><strong>Minimum Qualification:</strong> A video must reach a minimum of 2,000 views on the creator\'s top-performing platform to qualify for payment.</p>';
+                html += '<p><strong>Base Compensation:</strong> $20 per qualifying video.</p>';
+                html += '<p>For videos posted across multiple platforms, compensation is based on the highest view count from any single platform.</p>';
+                html += '</div>';
+                
+                html += '<div class="model-details-section">';
+                html += '<h3>Views Per Video Compensation</h3>';
+                html += '<table class="tier-table">';
+                html += '<thead><tr><th>Views</th><th>Compensation</th></tr></thead>';
+                html += '<tbody>';
+                html += '<tr><td>10,000,000+</td><td>$3,000 (cap)</td></tr>';
+                html += '<tr><td>5,000,000 - 9,999,999</td><td>$2,000</td></tr>';
+                html += '<tr><td>3,000,000 - 4,999,999</td><td>$1,500</td></tr>';
+                html += '<tr><td>1,000,000 - 2,999,999</td><td>$1,000</td></tr>';
+                html += '<tr><td>500,000 - 999,999</td><td>$700</td></tr>';
+                html += '<tr><td>250,000 - 499,999</td><td>$350</td></tr>';
+                html += '<tr><td>100,000 - 249,999</td><td>$225</td></tr>';
+                html += '<tr><td>50,000 - 99,999</td><td>$150</td></tr>';
+                html += '<tr><td>2,000 - 49,999</td><td>$20</td></tr>';
+                html += '<tr><td>&lt; 2,000</td><td>$0 (No compensation)</td></tr>';
+                html += '</tbody></table>';
+                html += '</div>';
+            } else if (modelNum === 6) {
+                html += '<h2>3k Minimum Base</h2>';
+                
+                html += '<div class="model-details-section">';
+                html += '<h3>Base Rates</h3>';
+                html += '<p><strong>Most Creators:</strong> $30.00 per video (with 3k+ views on any platform)</p>';
+                html += '<p><strong>John Sellers & Yunski:</strong> $40.00 per video (with 3k+ views on any platform)</p>';
+                html += '<p>Base rate is calculated on videos that reach a minimum of 3,000 views on <strong>any platform</strong> (Instagram, TikTok, or YouTube).</p>';
+                html += '<p>For videos posted across multiple platforms, the view count from the top-performing platform is used to determine qualification.</p>';
+                html += '</div>';
+                
+                html += '<div class="model-details-section">';
+                html += '<h3>Posting Limits</h3>';
+                html += '<p><strong>Trial Period:</strong> Maximum 3 videos per day</p>';
+                html += '<p><strong>Signed Period:</strong> 5 videos per day (can request more)</p>';
+                html += '</div>';
+                
+                html += '<div class="model-details-section">';
+                html += '<h3>14-Day SUM Bonus System</h3>';
+                html += '<p>Bonuses are calculated based on total views summed across all platforms (Instagram + TikTok + YouTube).</p>';
+                html += '<p><strong>Same bonus structure as Current Model:</strong></p>';
+                html += '<table class="tier-table">';
+                html += '<thead><tr><th>Total Views (14-Day Sum)</th><th>Bonus</th></tr></thead>';
+                html += '<tbody>';
+                html += '<tr><td>5,000,000+</td><td>$3,000 (capped)</td></tr>';
+                html += '<tr><td>3,000,000 - 4,999,999</td><td>$2,000</td></tr>';
+                html += '<tr><td>1,000,000 - 2,999,999</td><td>$1,200</td></tr>';
+                html += '<tr><td>500,000 - 999,999</td><td>$500</td></tr>';
+                html += '<tr><td>250,000 - 499,999</td><td>$200</td></tr>';
+                html += '<tr><td>50,000 - 249,999</td><td>$150</td></tr>';
+                html += '<tr><td>20,000 - 49,999</td><td>$35</td></tr>';
                 html += '</tbody></table>';
                 html += '</div>';
             }

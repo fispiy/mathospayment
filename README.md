@@ -14,6 +14,7 @@ pricingmodel/
 ├── web/                    # Web dashboard
 │   └── dashboard.html     # Interactive dashboard UI
 ├── start_dashboard.py     # Start the dashboard server
+├── vercel.json            # Vercel deployment configuration
 └── README.md              # This file
 ```
 

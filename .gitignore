@@ -1,4 +1,4 @@
-# Data files - all generated from CSV uploads
+# Data files - CSV files are not committed
 data/*.csv
-data/*.json
 data/creator_statistics.csv
+# JSON files are committed for Vercel deployment

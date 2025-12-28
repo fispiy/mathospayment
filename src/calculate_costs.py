@@ -198,6 +198,60 @@ def create_minimum_base_model() -> PerformanceBasedModel:
     )
 
 
+def create_3k_minimum_base_model() -> FinancialModel:
+    """
+    Create Model 6: Current Model with 3K Minimum.
+    Same as Model 1 (base rate + bonuses) but base rate only applies to Instagram videos with 3k+ views.
+    """
+    # Same bonus tiers as Model 1
+    bonus_tiers = [
+        PricingTier(min_views=5000000, bonus=3000.0, name="5M+ views"),
+        PricingTier(min_views=3000000, bonus=2000.0, name="3M+ views"),
+        PricingTier(min_views=1000000, bonus=1200.0, name="1M+ views"),
+        PricingTier(min_views=500000, bonus=500.0, name="500K+ views"),
+        PricingTier(min_views=250000, bonus=200.0, name="250K+ views"),
+        PricingTier(min_views=50000, bonus=150.0, name="50K+ views"),
+        PricingTier(min_views=20000, bonus=35.0, name="20K+ views"),
+    ]
+    
+    return FinancialModel(
+        name="3K Minimum Base Model",
+        base_rate_under_10k=30.0,
+        base_rate_over_10k=40.0,
+        trial_max_videos_per_day=3,
+        signed_max_videos_per_day=5,
+        bonus_tiers=bonus_tiers,
+        follower_threshold=10000
+    )
+
+
+def create_2k_base_model() -> PerformanceBasedModel:
+    """
+    Create Model 5: $20 Base with 2K Minimum.
+    $20 base fee per video with 2,000 views minimum.
+    Same compensation tiers as Model 4 (5k Minimum).
+    """
+    # Per video compensation tiers - same as Model 4 but with $20 at 2K views
+    per_video_tiers = [
+        PricingTier(min_views=10000000, bonus=3000.0, name="10M+ views"),
+        PricingTier(min_views=5000000, bonus=2000.0, name="5M+ views"),
+        PricingTier(min_views=3000000, bonus=1500.0, name="3M+ views"),
+        PricingTier(min_views=1000000, bonus=1000.0, name="1M+ views"),
+        PricingTier(min_views=500000, bonus=700.0, name="500K+ views"),
+        PricingTier(min_views=250000, bonus=350.0, name="250K+ views"),
+        PricingTier(min_views=100000, bonus=225.0, name="100K+ views"),
+        PricingTier(min_views=50000, bonus=150.0, name="50K+ views"),
+        PricingTier(min_views=5000, bonus=50.0, name="5K+ views"),
+        PricingTier(min_views=2000, bonus=20.0, name="2K+ views"),  # $20 base at 2K views
+    ]
+    
+    return PerformanceBasedModel(
+        name="2K Base Model",
+        min_views_qualification=2000,
+        per_video_tiers=per_video_tiers
+    )
+
+
 def estimate_follower_count(total_views: int, total_videos: int, avg_views: float) -> int:
     """Estimate follower count based on views and video count."""
     if total_videos == 0:
@@ -448,6 +502,56 @@ def calculate_performance_based_financials(
     )
 
 
+def calculate_all_creators_3k_minimum(model: FinancialModel, creator_videos: Dict[str, List[Dict]]) -> List[CreatorFinancials]:
+    """Calculate financials for all creators using Model 6: 3K minimum base model."""
+    from analyze_videos import deduplicate_videos
+    
+    financials_list = []
+    
+    for creator_name, videos in creator_videos.items():
+        # Deduplicate videos across all platforms and get top-performing platform for each
+        unique_videos = deduplicate_videos_for_performance(videos)
+        
+        # Count videos that have 3k+ views on ANY platform (using top-performing platform view count)
+        qualified_videos = [v for v in unique_videos if v.get('views', 0) >= 3000]
+        qualified_count = len(qualified_videos)
+        
+        # Calculate total views across all platforms (for bonus)
+        total_views = sum(v.get('views', 0) for v in unique_videos)
+        avg_views = total_views / len(unique_videos) if unique_videos else 0
+        
+        # Get base rate
+        base_rate = get_creator_base_rate(creator_name, model)
+        
+        # Calculate base cost (only for qualified videos - 3k+ views on any platform)
+        total_base_cost = qualified_count * base_rate
+        
+        # Calculate bonus (same as Model 1 - 14-day SUM)
+        bonus = model.calculate_bonus(total_views)
+        
+        total_cost = total_base_cost + bonus
+        cost_per_view = total_cost / total_views if total_views > 0 else 0
+        cost_per_video = total_cost / qualified_count if qualified_count > 0 else 0
+        
+        financials_list.append(CreatorFinancials(
+            creator_name=creator_name,
+            total_videos=len(unique_videos),
+            instagram_videos=qualified_count,  # Counted videos (qualified with 3k+ views on any platform)
+            total_views=total_views,
+            avg_views=avg_views,
+            follower_count=0,
+            period_type="signed",
+            base_rate_per_video=base_rate,
+            total_base_cost=total_base_cost,
+            bonus=bonus,
+            total_cost=total_cost,
+            cost_per_view=cost_per_view,
+            cost_per_video=cost_per_video
+        ))
+    
+    return financials_list
+
+
 def calculate_all_creators_performance(
     model: PerformanceBasedModel,
     creator_videos: Dict[str, List[Dict]]
@@ -632,6 +736,34 @@ def main():
         model = create_minimum_base_model()
         financials = calculate_all_creators_performance(model, creator_videos)
         print_performance_costs(financials, model)
+    elif len(sys.argv) > 1 and sys.argv[1] == "5":
+        # 2K base model
+        print("Loading video data for 2K base model...")
+        creator_videos = load_video_data()
+        
+        if not creator_videos:
+            print("No video data found.")
+            return
+        
+        print(f"Loaded videos for {len(creator_videos)} creators\n")
+        
+        model = create_2k_base_model()
+        financials = calculate_all_creators_performance(model, creator_videos)
+        print_performance_costs(financials, model)
+    elif len(sys.argv) > 1 and sys.argv[1] == "6":
+        # 3K minimum base model
+        print("Loading video data for 3K minimum base model...")
+        creator_videos = load_video_data()
+        
+        if not creator_videos:
+            print("No video data found.")
+            return
+        
+        print(f"Loaded videos for {len(creator_videos)} creators\n")
+        
+        model = create_3k_minimum_base_model()
+        financials = calculate_all_creators_3k_minimum(model, creator_videos)
+        print_monthly_costs(financials, model)
     else:
         # Default base rate model
         print("Loading creator statistics...")
