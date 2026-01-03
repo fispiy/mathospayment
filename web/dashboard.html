@@ -299,6 +299,8 @@
                 <option value="4">5k Minimum</option>
                 <option value="5">2k Minimum</option>
                 <option value="6">3k Minimum Base</option>
+                <option value="7">Optimized Balanced Model</option>
+                <option value="8">3k Base + Performance Bonuses</option>
             </select>
             <button class="details-btn" onclick="toggleModelDetails()">View Model</button>
         </div>
@@ -671,6 +673,107 @@
                 html += '<tr><td>50,000 - 249,999</td><td>$150</td></tr>';
                 html += '<tr><td>20,000 - 49,999</td><td>$35</td></tr>';
                 html += '</tbody></table>';
+                html += '</div>';
+            } else if (modelNum === 7) {
+                html += '<h2>Optimized Balanced Model</h2>';
+                
+                html += '<div class="model-details-section">';
+                html += '<h3>Design Principles</h3>';
+                html += '<p>This model balances creator incentives with budget control, optimized based on actual video performance data.</p>';
+                html += '<ul style="margin-left: 20px; margin-top: 10px;">';
+                html += '<li><strong>2.5k minimum threshold</strong> - Better incentive than 3k (27% more videos qualify)</li>';
+                html += '<li><strong>$25 base rate</strong> - Fair compensation while controlling costs</li>';
+                html += '<li><strong>Optimized bonus tiers</strong> - Rewards top performers while maintaining budget</li>';
+                html += '<li><strong>Target budget:</strong> $5,000-$7,000 range</li>';
+                html += '</ul>';
+                html += '</div>';
+                
+                html += '<div class="model-details-section">';
+                html += '<h3>Base Rates</h3>';
+                html += '<p><strong>Most Creators:</strong> $25.00 per video (with 2.5k+ views on any platform)</p>';
+                html += '<p><strong>John Sellers & Yunski:</strong> $35.00 per video (with 2.5k+ views on any platform)</p>';
+                html += '<p>Base rate is calculated on videos that reach a minimum of 2,500 views on <strong>any platform</strong> (Instagram, TikTok, or YouTube).</p>';
+                html += '<p>For videos posted across multiple platforms, the view count from the top-performing platform is used to determine qualification.</p>';
+                html += '</div>';
+                
+                html += '<div class="model-details-section">';
+                html += '<h3>Posting Limits</h3>';
+                html += '<p><strong>Trial Period:</strong> Maximum 3 videos per day</p>';
+                html += '<p><strong>Signed Period:</strong> 5 videos per day (can request more)</p>';
+                html += '</div>';
+                
+                html += '<div class="model-details-section">';
+                html += '<h3>14-Day SUM Bonus System</h3>';
+                html += '<p>Bonuses are calculated based on total views summed across all platforms (Instagram + TikTok + YouTube).</p>';
+                html += '<p><strong>Optimized bonus structure:</strong></p>';
+                html += '<table class="tier-table">';
+                html += '<thead><tr><th>Total Views (14-Day Sum)</th><th>Bonus</th></tr></thead>';
+                html += '<tbody>';
+                html += '<tr><td>5,000,000+</td><td>$2,500 (capped)</td></tr>';
+                html += '<tr><td>3,000,000 - 4,999,999</td><td>$1,500</td></tr>';
+                html += '<tr><td>1,000,000 - 2,999,999</td><td>$1,000</td></tr>';
+                html += '<tr><td>500,000 - 999,999</td><td>$400</td></tr>';
+                html += '<tr><td>250,000 - 499,999</td><td>$175</td></tr>';
+                html += '<tr><td>50,000 - 249,999</td><td>$125</td></tr>';
+                html += '<tr><td>20,000 - 49,999</td><td>$30</td></tr>';
+                html += '</tbody></table>';
+                html += '</div>';
+            } else if (modelNum === 8) {
+                html += '<h2>3k Base + CPM Bonuses</h2>';
+                
+                html += '<div class="model-details-section">';
+                html += '<h3>Hybrid Compensation Structure</h3>';
+                html += '<p>This model combines the base rate structure from Model 6 (3k minimum) with per-video CPM bonuses from Model 3 (UGC industry standard).</p>';
+                html += '<p><strong>Two-part compensation:</strong></p>';
+                html += '<ul style="margin-left: 20px; margin-top: 10px;">';
+                html += '<li><strong>Base Rate:</strong> Paid for videos with 3k+ views on any platform</li>';
+                html += '<li><strong>CPM Bonuses:</strong> Additional bonuses calculated at 1 CPM ($1 per 1,000 views) per video</li>';
+                html += '</ul>';
+                html += '</div>';
+                
+                html += '<div class="model-details-section">';
+                html += '<h3>Base Rates</h3>';
+                html += '<p><strong>Most Creators:</strong> $30.00 per video (with 3k+ views on any platform)</p>';
+                html += '<p><strong>John Sellers & Yunski:</strong> $40.00 per video (with 3k+ views on any platform)</p>';
+                html += '<p>Base rate is calculated on videos that reach a minimum of 3,000 views on <strong>any platform</strong> (Instagram, TikTok, or YouTube).</p>';
+                html += '<p>For videos posted across multiple platforms, the view count from the top-performing platform is used to determine qualification.</p>';
+                html += '</div>';
+                
+                html += '<div class="model-details-section">';
+                html += '<h3>Per-Video CPM Bonus System</h3>';
+                html += '<p>Each video receives additional compensation based on its individual view count using a CPM (Cost Per Mille) structure.</p>';
+                html += '<p><strong>Formula:</strong> Bonus = (Video Views ÷ 1,000) × $1</p>';
+                html += '<p><strong>Cap:</strong> Maximum bonus capped at $1,200 per video (applies at 1M+ views per video)</p>';
+                html += '<p>Bonuses are calculated per video, not as a sum across all videos.</p>';
+                html += '<table class="tier-table">';
+                html += '<thead><tr><th>Views per Video</th><th>CPM Bonus (1 CPM)</th></tr></thead>';
+                html += '<tbody>';
+                html += '<tr><td>1,000,000+</td><td>$1,200 (capped)</td></tr>';
+                html += '<tr><td>500,000 - 999,999</td><td>$500 - $999</td></tr>';
+                html += '<tr><td>250,000 - 499,999</td><td>$250 - $499</td></tr>';
+                html += '<tr><td>100,000 - 249,999</td><td>$100 - $249</td></tr>';
+                html += '<tr><td>50,000 - 99,999</td><td>$50 - $99</td></tr>';
+                html += '<tr><td>20,000 - 49,999</td><td>$20 - $49</td></tr>';
+                html += '<tr><td>10,000 - 19,999</td><td>$10 - $19</td></tr>';
+                html += '<tr><td>3,000 - 9,999</td><td>$3 - $9</td></tr>';
+                html += '<tr><td>&lt; 3,000</td><td>Proportional (views ÷ 1000)</td></tr>';
+                html += '</tbody></table>';
+                html += '</div>';
+                
+                html += '<div class="model-details-section">';
+                html += '<h3>Example Calculation</h3>';
+                html += '<p><strong>Example 1:</strong> A creator posts a video that gets 100k views on TikTok.</p>';
+                html += '<ul style="margin-left: 20px; margin-top: 10px;">';
+                html += '<li>Base payment: $30 (qualifies because 100k &gt; 3k)</li>';
+                html += '<li>CPM bonus: (100,000 ÷ 1,000) × $1 = $100</li>';
+                html += '<li><strong>Total compensation: $130 for this video</strong></li>';
+                html += '</ul>';
+                html += '<p><strong>Example 2:</strong> A creator posts a video that gets 1.5M views.</p>';
+                html += '<ul style="margin-left: 20px; margin-top: 10px;">';
+                html += '<li>Base payment: $30 (qualifies because 1.5M &gt; 3k)</li>';
+                html += '<li>CPM bonus: $1,200 (capped at 1M+ views)</li>';
+                html += '<li><strong>Total compensation: $1,230 for this video</strong></li>';
+                html += '</ul>';
                 html += '</div>';
             }
             

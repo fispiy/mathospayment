@@ -123,6 +123,8 @@ def deduplicate_videos(videos_list):
     return unique_videos
 
 def main():
+    import sys
+    
     # Load creator registry
     print("Loading creator registry...")
     registry = create_registry()
@@ -130,7 +132,19 @@ def main():
     
     # Load and process video data
     print("Loading video data...")
-    csv_file = str(Path(__file__).parent.parent / "data" / "videos_20251226233919.csv")
+    # Allow CSV file to be specified as command-line argument
+    if len(sys.argv) > 1:
+        csv_file = sys.argv[1]
+    else:
+        # Find the most recent December data CSV, or fall back to default
+        data_dir = Path(__file__).parent.parent / "data"
+        december_files = list(data_dir.glob("videos_december_*.csv"))
+        if december_files:
+            # Use the most recent December file
+            csv_file = str(max(december_files, key=lambda p: p.stat().st_mtime))
+            print(f"Using December data: {csv_file}")
+        else:
+            csv_file = str(data_dir / "videos_20251226233919.csv")
     
     creator_stats = defaultdict(lambda: {
         'videos': [],

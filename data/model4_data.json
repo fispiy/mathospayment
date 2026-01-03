@@ -1,156 +1,177 @@
 {
   "model_name": "Model 4: Lower Threshold Performance Model",
-  "total_cost": 4750.0,
-  "total_videos": 1240,
-  "total_qualified": 56,
-  "total_views": 3875741,
-  "cost_per_view": 0.0012255720906015133,
+  "total_cost": 3800.0,
+  "total_videos": 422,
+  "total_qualified": 49,
+  "total_views": 2165846,
+  "cost_per_view": 0.0017545107085175954,
   "creators": [
     {
-      "creator_name": "Kiru*",
-      "total_videos": 40,
-      "qualified_videos": 7,
-      "total_views": 652159,
-      "total_compensation": 850.0
-    },
-    {
-      "creator_name": "Adam",
-      "total_videos": 34,
+      "creator_name": "Kiru",
+      "total_videos": 18,
       "qualified_videos": 6,
-      "total_views": 486160,
-      "total_compensation": 775.0
-    },
-    {
-      "creator_name": "Daniel+",
-      "total_videos": 117,
-      "qualified_videos": 5,
-      "total_views": 549382,
-      "total_compensation": 600.0
-    },
-    {
-      "creator_name": "Jill",
-      "total_videos": 69,
-      "qualified_videos": 4,
-      "total_views": 207005,
-      "total_compensation": 375.0
-    },
-    {
-      "creator_name": "Matt*",
-      "total_videos": 214,
-      "qualified_videos": 5,
-      "total_views": 404487,
-      "total_compensation": 350.0
+      "total_views": 633965,
+      "total_compensation": 800.0
     },
     {
       "creator_name": "Jasper",
-      "total_videos": 112,
-      "qualified_videos": 2,
-      "total_views": 301158,
-      "total_compensation": 275.0
-    },
-    {
-      "creator_name": "Ivan",
-      "total_videos": 86,
+      "total_videos": 26,
       "qualified_videos": 5,
-      "total_views": 141930,
-      "total_compensation": 250.0
+      "total_views": 432623,
+      "total_compensation": 550.0
     },
     {
-      "creator_name": "Thanush",
-      "total_videos": 57,
-      "qualified_videos": 5,
-      "total_views": 135463,
-      "total_compensation": 250.0
+      "creator_name": "Kong",
+      "total_videos": 51,
+      "qualified_videos": 9,
+      "total_views": 161583,
+      "total_compensation": 550.0
     },
     {
-      "creator_name": "JP",
-      "total_videos": 22,
-      "qualified_videos": 1,
-      "total_views": 278534,
-      "total_compensation": 225.0
+      "creator_name": "Jill",
+      "total_videos": 26,
+      "qualified_videos": 4,
+      "total_views": 140867,
+      "total_compensation": 375.0
     },
     {
       "creator_name": "Yunski",
-      "total_videos": 46,
+      "total_videos": 6,
       "qualified_videos": 3,
-      "total_views": 83993,
-      "total_compensation": 150.0
+      "total_views": 120900,
+      "total_compensation": 250.0
     },
     {
-      "creator_name": "Arnab*",
-      "total_videos": 120,
-      "qualified_videos": 3,
-      "total_views": 136693,
-      "total_compensation": 150.0
-    },
-    {
-      "creator_name": "John Sellers",
-      "total_videos": 60,
-      "qualified_videos": 3,
-      "total_views": 119027,
-      "total_compensation": 150.0
-    },
-    {
-      "creator_name": "Ann",
-      "total_videos": 14,
-      "qualified_videos": 2,
-      "total_views": 22228,
-      "total_compensation": 100.0
-    },
-    {
-      "creator_name": "Dre",
-      "total_videos": 43,
-      "qualified_videos": 2,
-      "total_views": 64536,
-      "total_compensation": 100.0
-    },
-    {
-      "creator_name": "Riley",
-      "total_videos": 49,
-      "qualified_videos": 2,
-      "total_views": 90625,
-      "total_compensation": 100.0
-    },
-    {
-      "creator_name": "Gustavo",
-      "total_videos": 10,
+      "creator_name": "Daniel",
+      "total_videos": 44,
       "qualified_videos": 1,
-      "total_views": 35436,
+      "total_views": 203284,
+      "total_compensation": 225.0
+    },
+    {
+      "creator_name": "Jxhn Up",
+      "total_videos": 20,
+      "qualified_videos": 4,
+      "total_views": 60561,
+      "total_compensation": 200.0
+    },
+    {
+      "creator_name": "Thanush",
+      "total_videos": 16,
+      "qualified_videos": 4,
+      "total_views": 40738,
+      "total_compensation": 200.0
+    },
+    {
+      "creator_name": "Arnab",
+      "total_videos": 35,
+      "qualified_videos": 4,
+      "total_views": 69409,
+      "total_compensation": 200.0
+    },
+    {
+      "creator_name": "Cary",
+      "total_videos": 18,
+      "qualified_videos": 3,
+      "total_views": 58500,
+      "total_compensation": 150.0
+    },
+    {
+      "creator_name": "Sarah",
+      "total_videos": 25,
+      "qualified_videos": 1,
+      "total_views": 35906,
       "total_compensation": 50.0
     },
     {
-      "creator_name": "Kevin Rhee",
-      "total_videos": 19,
+      "creator_name": "The Mathcentral",
+      "total_videos": 1,
+      "qualified_videos": 1,
+      "total_views": 29100,
+      "total_compensation": 50.0
+    },
+    {
+      "creator_name": "Studyindark",
+      "total_videos": 4,
+      "qualified_videos": 1,
+      "total_views": 19500,
+      "total_compensation": 50.0
+    },
+    {
+      "creator_name": "John Sellers",
+      "total_videos": 11,
+      "qualified_videos": 1,
+      "total_views": 30206,
+      "total_compensation": 50.0
+    },
+    {
+      "creator_name": "JP",
+      "total_videos": 14,
+      "qualified_videos": 1,
+      "total_views": 17236,
+      "total_compensation": 50.0
+    },
+    {
+      "creator_name": "Riley",
+      "total_videos": 14,
+      "qualified_videos": 1,
+      "total_views": 18249,
+      "total_compensation": 50.0
+    },
+    {
+      "creator_name": "Huzaifa",
+      "total_videos": 18,
       "qualified_videos": 0,
-      "total_views": 26007,
+      "total_views": 35767,
+      "total_compensation": 0.0
+    },
+    {
+      "creator_name": "Kevin Rhee",
+      "total_videos": 11,
+      "qualified_videos": 0,
+      "total_views": 19729,
+      "total_compensation": 0.0
+    },
+    {
+      "creator_name": "Yaz",
+      "total_videos": 14,
+      "qualified_videos": 0,
+      "total_views": 16369,
+      "total_compensation": 0.0
+    },
+    {
+      "creator_name": "Nevin",
+      "total_videos": 6,
+      "qualified_videos": 0,
+      "total_views": 1865,
+      "total_compensation": 0.0
+    },
+    {
+      "creator_name": "Nadra",
+      "total_videos": 18,
+      "qualified_videos": 0,
+      "total_views": 10462,
+      "total_compensation": 0.0
+    },
+    {
+      "creator_name": "Ann",
+      "total_videos": 13,
+      "qualified_videos": 0,
+      "total_views": 3247,
       "total_compensation": 0.0
     },
     {
       "creator_name": "Allen",
-      "total_videos": 12,
+      "total_videos": 5,
       "qualified_videos": 0,
-      "total_views": 12499,
+      "total_views": 5780,
       "total_compensation": 0.0
     },
     {
-      "creator_name": "Huzaifa",
-      "total_videos": 90,
+      "creator_name": "Gustavo",
+      "total_videos": 8,
       "qualified_videos": 0,
-      "total_views": 108695,
-      "total_compensation": 0.0
-    },
-    {
-      "creator_name": "Yaz+",
-      "total_videos": 20,
-      "qualified_videos": 0,
-      "total_views": 17668,
-      "total_compensation": 0.0
-    },
-    {
-      "creator_name": "Nevin+",
-      "total_videos": 6,
-      "qualified_videos": 0,
-      "total_views": 2056,
+      "total_views": 0,
       "total_compensation": 0.0
     }
   ]

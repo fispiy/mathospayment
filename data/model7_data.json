@@ -1,0 +1,203 @@
+{
+  "model_name": "Model 7: Optimized Balanced Model",
+  "total_cost": 4540.0,
+  "total_base_cost": 2940.0,
+  "total_bonus": 1600.0,
+  "total_instagram_videos": 114,
+  "total_views": 2165846,
+  "cost_per_view": 0.0020961785833341798,
+  "creators": [
+    {
+      "creator_name": "Kong",
+      "instagram_videos": 17,
+      "total_views": 161583,
+      "total_base_cost": 425.0,
+      "bonus": 125.0,
+      "total_cost": 550.0
+    },
+    {
+      "creator_name": "Kiru",
+      "instagram_videos": 6,
+      "total_views": 633965,
+      "total_base_cost": 150.0,
+      "bonus": 400.0,
+      "total_cost": 550.0
+    },
+    {
+      "creator_name": "Arnab",
+      "instagram_videos": 12,
+      "total_views": 69409,
+      "total_base_cost": 300.0,
+      "bonus": 125.0,
+      "total_cost": 425.0
+    },
+    {
+      "creator_name": "Jxhn Up",
+      "instagram_videos": 10,
+      "total_views": 60561,
+      "total_base_cost": 250.0,
+      "bonus": 125.0,
+      "total_cost": 375.0
+    },
+    {
+      "creator_name": "Jasper",
+      "instagram_videos": 8,
+      "total_views": 432623,
+      "total_base_cost": 200.0,
+      "bonus": 175.0,
+      "total_cost": 375.0
+    },
+    {
+      "creator_name": "Cary",
+      "instagram_videos": 7,
+      "total_views": 58500,
+      "total_base_cost": 175.0,
+      "bonus": 125.0,
+      "total_cost": 300.0
+    },
+    {
+      "creator_name": "Jill",
+      "instagram_videos": 6,
+      "total_views": 140867,
+      "total_base_cost": 150.0,
+      "bonus": 125.0,
+      "total_cost": 275.0
+    },
+    {
+      "creator_name": "John Sellers",
+      "instagram_videos": 6,
+      "total_views": 30206,
+      "total_base_cost": 210.0,
+      "bonus": 30.0,
+      "total_cost": 240.0
+    },
+    {
+      "creator_name": "Huzaifa",
+      "instagram_videos": 8,
+      "total_views": 35767,
+      "total_base_cost": 200.0,
+      "bonus": 30.0,
+      "total_cost": 230.0
+    },
+    {
+      "creator_name": "Yunski",
+      "instagram_videos": 3,
+      "total_views": 120900,
+      "total_base_cost": 105.0,
+      "bonus": 125.0,
+      "total_cost": 230.0
+    },
+    {
+      "creator_name": "Thanush",
+      "instagram_videos": 7,
+      "total_views": 40738,
+      "total_base_cost": 175.0,
+      "bonus": 30.0,
+      "total_cost": 205.0
+    },
+    {
+      "creator_name": "Sarah",
+      "instagram_videos": 5,
+      "total_views": 35906,
+      "total_base_cost": 125.0,
+      "bonus": 30.0,
+      "total_cost": 155.0
+    },
+    {
+      "creator_name": "Daniel",
+      "instagram_videos": 1,
+      "total_views": 203284,
+      "total_base_cost": 25.0,
+      "bonus": 125.0,
+      "total_cost": 150.0
+    },
+    {
+      "creator_name": "Kevin Rhee",
+      "instagram_videos": 5,
+      "total_views": 19729,
+      "total_base_cost": 125.0,
+      "bonus": 0.0,
+      "total_cost": 125.0
+    },
+    {
+      "creator_name": "Studyindark",
+      "instagram_videos": 3,
+      "total_views": 19500,
+      "total_base_cost": 75.0,
+      "bonus": 0.0,
+      "total_cost": 75.0
+    },
+    {
+      "creator_name": "JP",
+      "instagram_videos": 3,
+      "total_views": 17236,
+      "total_base_cost": 75.0,
+      "bonus": 0.0,
+      "total_cost": 75.0
+    },
+    {
+      "creator_name": "Riley",
+      "instagram_videos": 3,
+      "total_views": 18249,
+      "total_base_cost": 75.0,
+      "bonus": 0.0,
+      "total_cost": 75.0
+    },
+    {
+      "creator_name": "The Mathcentral",
+      "instagram_videos": 1,
+      "total_views": 29100,
+      "total_base_cost": 25.0,
+      "bonus": 30.0,
+      "total_cost": 55.0
+    },
+    {
+      "creator_name": "Yaz",
+      "instagram_videos": 1,
+      "total_views": 16369,
+      "total_base_cost": 25.0,
+      "bonus": 0.0,
+      "total_cost": 25.0
+    },
+    {
+      "creator_name": "Nadra",
+      "instagram_videos": 1,
+      "total_views": 10462,
+      "total_base_cost": 25.0,
+      "bonus": 0.0,
+      "total_cost": 25.0
+    },
+    {
+      "creator_name": "Allen",
+      "instagram_videos": 1,
+      "total_views": 5780,
+      "total_base_cost": 25.0,
+      "bonus": 0.0,
+      "total_cost": 25.0
+    },
+    {
+      "creator_name": "Nevin",
+      "instagram_videos": 0,
+      "total_views": 1865,
+      "total_base_cost": 0.0,
+      "bonus": 0.0,
+      "total_cost": 0.0
+    },
+    {
+      "creator_name": "Ann",
+      "instagram_videos": 0,
+      "total_views": 3247,
+      "total_base_cost": 0.0,
+      "bonus": 0.0,
+      "total_cost": 0.0
+    },
+    {
+      "creator_name": "Gustavo",
+      "instagram_videos": 0,
+      "total_views": 0,
+      "total_base_cost": 0.0,
+      "bonus": 0.0,
+      "total_cost": 0.0
+    }
+  ]
+}
