@@ -386,7 +386,7 @@
             // Determine filename based on model type
             let filename;
             if (currentModelType === 'new') {
-                filename = `/data/new_model_${modelId}_data.json`;
+                filename = `/data/new_model_${modelId.toLowerCase()}_data.json`;
             } else {
                 filename = `/data/model${modelId}_data.json`;
             }
