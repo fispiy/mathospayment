@@ -271,61 +271,101 @@ def calculate_summed_video_bonus_model(creator_videos: Dict[str, List[Dict]]) ->
     return results
 
 
-def project_january_2026_data(december_data: Dict[str, List[Dict]], viral_percentage: float = 0.012) -> Dict[str, List[Dict]]:
+def project_january_2026_data(december_data: Dict[str, List[Dict]], january_target_percentage: float = 0.012) -> Dict[str, List[Dict]]:
     """
     Project January 2026 data based on December 2025 data.
     
     Assumptions:
     - Same number of videos per creator
-    - 1.2% (default) of videos >100k views become "viral" (multiplier applied)
-    - Viral videos get 3x-10x view multiplier (randomly distributed)
+    - December: ~0.8% of videos are >100k views
+    - January: ~1.2% of videos should be >100k views (target)
+    - Videos that cross the 100k threshold get boosted (3x-10x multiplier)
     - Other videos maintain similar view counts (with small variation)
     
     Args:
         december_data: December 2025 video data
-        viral_percentage: Percentage of videos >100k that become viral (default 1.2%)
+        january_target_percentage: Target percentage of videos >100k in January (default 1.2%)
     """
     import random
     random.seed(42)  # For reproducibility
     
-    january_data = {}
+    # Count total videos and videos >100k in December
+    # Store videos with their index for accurate matching
+    all_videos = []
+    high_view_videos = []  # Videos already >100k: (creator_name, video_index, views)
+    candidate_videos = []   # Videos that can be boosted to cross 100k threshold
     
-    # First, identify all videos >100k in December
-    all_high_view_videos = []
     for creator_name, videos in december_data.items():
-        for video in videos:
-            if video.get('views', 0) >= 100000:
-                all_high_view_videos.append((creator_name, video))
+        for video_idx, video in enumerate(videos):
+            views = video.get('views', 0)
+            all_videos.append((creator_name, video_idx, views))
+            if views >= 100000:
+                high_view_videos.append((creator_name, video_idx, views))
+            elif views >= 20000:  # Candidates: videos with 20k+ views can be boosted to cross 100k
+                candidate_videos.append((creator_name, video_idx, views))
     
-    # Calculate how many should become viral
-    num_viral = max(1, int(len(all_high_view_videos) * viral_percentage))
+    total_videos = len(all_videos)
+    december_high_count = len(high_view_videos)
+    december_percentage = december_high_count / total_videos if total_videos > 0 else 0
     
-    # Randomly select which videos become viral
-    viral_videos = random.sample(all_high_view_videos, min(num_viral, len(all_high_view_videos)))
-    viral_set = set((name, id(video)) for name, video in viral_videos)
+    # Calculate target: 1.2% of total videos should be >100k in January
+    target_high_count = max(1, int(total_videos * january_target_percentage))
+    additional_needed = max(0, target_high_count - december_high_count)
+    
+    print(f"December: {december_high_count}/{total_videos} videos >100k ({december_percentage*100:.2f}%)")
+    print(f"January target: {target_high_count}/{total_videos} videos >100k ({january_target_percentage*100:.2f}%)")
+    print(f"Need to boost {additional_needed} additional videos to cross 100k threshold")
+    
+    # Select videos to boost:
+    # 1. All existing >100k videos get boosted (3x-10x)
+    # 2. Additional videos from candidate pool get boosted to cross 100k
+    videos_to_boost = list(high_view_videos)  # Start with existing >100k
+    
+    if additional_needed > 0 and len(candidate_videos) > 0:
+        # Select additional videos from candidate pool (prioritize higher-view videos)
+        # Sort by views descending to prioritize videos closer to 100k
+        candidate_videos_sorted = sorted(candidate_videos, key=lambda x: x[2], reverse=True)
+        num_to_select = min(additional_needed, len(candidate_videos_sorted))
+        # Select from top candidates (higher views = more likely to cross threshold)
+        selected_candidates = candidate_videos_sorted[:num_to_select]
+        videos_to_boost.extend(selected_candidates)
+    
+    # Create a set of (creator_name, video_index) tuples for quick lookup
+    boost_set = set((name, idx) for name, idx, _ in videos_to_boost)
     
     # Project January data
+    january_data = {}
     for creator_name, videos in december_data.items():
         january_videos = []
         
-        for video in videos:
+        for video_idx, video in enumerate(videos):
             views = video.get('views', 0)
-            video_id = id(video)
             
-            # Check if this video should be viral
-            is_viral = (creator_name, video) in viral_videos or any(
-                name == creator_name and id(v) == video_id 
-                for name, v in viral_videos
-            )
+            # Check if this video should be boosted using (creator_name, video_index)
+            should_boost = (creator_name, video_idx) in boost_set
             
-            if is_viral and views >= 100000:
-                # Viral video: apply 3x-10x multiplier
-                multiplier = random.uniform(3.0, 10.0)
-                new_views = int(views * multiplier)
+            if should_boost:
+                if views >= 100000:
+                    # Already >100k: apply 3x-10x multiplier
+                    multiplier = random.uniform(3.0, 10.0)
+                    new_views = int(views * multiplier)
+                else:
+                    # Candidate video: boost to cross 100k threshold
+                    # For videos 20k-99k, apply multiplier to ensure they cross 100k
+                    # Lower view videos need higher multipliers
+                    if views >= 50000:
+                        multiplier = random.uniform(2.0, 5.0)  # 2x-5x for 50k-99k
+                    elif views >= 30000:
+                        multiplier = random.uniform(3.5, 6.0)  # 3.5x-6x for 30k-49k
+                    else:
+                        multiplier = random.uniform(5.0, 8.0)  # 5x-8x for 20k-29k
+                    new_views = max(100001, int(views * multiplier))  # Ensure >100k
+                is_viral = True
             else:
                 # Regular video: small variation (±20%)
                 variation = random.uniform(0.8, 1.2)
                 new_views = int(views * variation)
+                is_viral = False
             
             january_videos.append({
                 'views': new_views,
@@ -335,6 +375,15 @@ def project_january_2026_data(december_data: Dict[str, List[Dict]], viral_percen
             })
         
         january_data[creator_name] = january_videos
+    
+    # Verify January percentage
+    january_high_count = sum(
+        1 for videos in january_data.values()
+        for video in videos
+        if video.get('views', 0) >= 100000
+    )
+    january_percentage = january_high_count / total_videos if total_videos > 0 else 0
+    print(f"January result: {january_high_count}/{total_videos} videos >100k ({january_percentage*100:.2f}%)")
     
     return january_data
 
@@ -440,7 +489,7 @@ def main():
     print("\n" + "="*80)
     print("Projecting January 2026 data...")
     print("="*80)
-    january_data = project_january_2026_data(december_data, viral_percentage=0.012)
+    january_data = project_january_2026_data(december_data, january_target_percentage=0.012)
     
     # Count viral videos
     total_viral = sum(
