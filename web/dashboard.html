@@ -291,17 +291,19 @@
         </div>
         
         <div class="model-selector">
-            <label for="modelSelect">Select Model:</label>
-            <select id="modelSelect" onchange="loadModel(parseInt(this.value))">
-                <option value="1">Current Model</option>
-                <option value="2">10k Minimum</option>
-                <option value="3">Lowered Current Model</option>
-                <option value="4">5k Minimum</option>
-                <option value="5">2k Minimum</option>
-                <option value="6">3k Minimum Base</option>
-                <option value="7">Optimized Balanced Model</option>
-                <option value="8">3k Base + Performance Bonuses</option>
+            <div style="display: flex; align-items: center; gap: 20px; flex: 1;">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <label for="modelTypeToggle" style="font-size: 0.9em; font-weight: 500; color: #666666; text-transform: uppercase; letter-spacing: 1px;">View:</label>
+                    <select id="modelTypeToggle" onchange="switchModelType(this.value)" style="padding: 8px 15px; border: 1px solid #e0e0e0; background: #ffffff; font-size: 0.95em; cursor: pointer;">
+                        <option value="new">New Models</option>
+                        <option value="old">Old Models</option>
             </select>
+                </div>
+                <label for="modelSelect" style="font-size: 0.9em; font-weight: 500; color: #666666; text-transform: uppercase; letter-spacing: 1px;">Select Model:</label>
+                <select id="modelSelect" onchange="loadModel(this.value)" style="flex: 1; max-width: 500px;">
+                    <!-- Options will be populated by JavaScript -->
+                </select>
+            </div>
             <button class="details-btn" onclick="toggleModelDetails()">View Model</button>
         </div>
         
@@ -315,16 +317,60 @@
     </div>
     
     <script>
-        let currentModel = 1;
+        let currentModelType = 'new';
+        let currentModel = 'A';
+        let modelAData = null;
+        let modelBData = null;
         let model1Data = null;
         let model2Data = null;
         let model3Data = null;
         let model4Data = null;
         let model5Data = null;
         let model6Data = null;
+        let model7Data = null;
+        let model8Data = null;
         
-        function loadModel(modelNum) {
-            currentModel = modelNum;
+        // Model configurations
+        const newModels = [
+            { value: 'A', label: 'Model A: $30 Base + Individual Video Bonus (Dec 2025)' },
+            { value: 'B', label: 'Model B: $30 Base + Summed Video Bonus (Dec 2025)' },
+            { value: 'C', label: 'Model C: $30 Base + Individual Video Bonus (Jan 2026 Projection)' },
+            { value: 'D', label: 'Model D: $30 Base + Summed Video Bonus (Jan 2026 Projection)' },
+            { value: 'E', label: 'Model E: $30 Base + Individual Video Bonus (Jan 2026 Actual)' },
+            { value: 'F', label: 'Model F: $30 Base + Summed Video Bonus (Jan 2026 Actual)' }
+        ];
+        
+        const oldModels = [
+            { value: '1', label: 'Model 1: Base Rate + Bonuses' },
+            { value: '2', label: 'Model 2: Performance-Based Per Video' },
+            { value: '3', label: 'Model 3: Optimized CPM Model' },
+            { value: '4', label: 'Model 4: Lower Threshold Performance' },
+            { value: '5', label: 'Model 5: $20 Base with 2K Minimum' },
+            { value: '6', label: 'Model 6: 3K Minimum Base' },
+            { value: '7', label: 'Model 7: Optimized Balanced Model' },
+            { value: '8', label: 'Model 8: 3K Base + Performance Bonuses' }
+        ];
+        
+        function switchModelType(type) {
+            currentModelType = type;
+            const select = document.getElementById('modelSelect');
+            select.innerHTML = '';
+            
+            const models = type === 'new' ? newModels : oldModels;
+            models.forEach(model => {
+                const option = document.createElement('option');
+                option.value = model.value;
+                option.textContent = model.label;
+                select.appendChild(option);
+            });
+            
+            // Load first model
+            currentModel = models[0].value;
+            loadModel(currentModel);
+        }
+        
+        function loadModel(modelId) {
+            currentModel = modelId;
             
             // Hide model details when switching models
             const details = document.getElementById('modelDetails');
@@ -337,8 +383,14 @@
             // Show loading
             document.getElementById('content').innerHTML = '<div class="loading">Loading...</div>';
             
-            // Load data from JSON file
-            const filename = `/data/model${modelNum}_data.json`;
+            // Determine filename based on model type
+            let filename;
+            if (currentModelType === 'new') {
+                filename = `/data/new_model_${modelId}_data.json`;
+            } else {
+                filename = `/data/model${modelId}_data.json`;
+            }
+            
             fetch(filename)
                 .then(response => {
                     if (!response.ok) {
@@ -347,20 +399,20 @@
                     return response.json();
                 })
                 .then(data => {
-                    if (modelNum === 1) {
-                        model1Data = data;
-                    } else if (modelNum === 2) {
-                        model2Data = data;
-                    } else if (modelNum === 3) {
-                        model3Data = data;
-                    } else if (modelNum === 4) {
-                        model4Data = data;
-                    } else if (modelNum === 5) {
-                        model5Data = data;
+                    // Cache data (optional - for future use)
+                    if (currentModelType === 'new') {
+                        // Models are loaded on demand, no need to cache all
                     } else {
-                        model6Data = data;
+                        if (modelId === '1') model1Data = data;
+                        else if (modelId === '2') model2Data = data;
+                        else if (modelId === '3') model3Data = data;
+                        else if (modelId === '4') model4Data = data;
+                        else if (modelId === '5') model5Data = data;
+                        else if (modelId === '6') model6Data = data;
+                        else if (modelId === '7') model7Data = data;
+                        else if (modelId === '8') model8Data = data;
                     }
-                    renderModel(data, modelNum);
+                    renderModel(data, modelId);
                 })
                 .catch(error => {
                     document.getElementById('content').innerHTML = 
@@ -377,14 +429,19 @@
             return new Intl.NumberFormat('en-US').format(num);
         }
         
-        function renderModel(data, modelNum) {
+        function renderModel(data, modelId) {
             let html = '';
             
             // Summary section
             html += '<div class="summary">';
             html += '<div class="summary-grid">';
             
-            if (modelNum === 1 || modelNum === 3 || modelNum === 6) {
+            // Determine model type for rendering
+            const isNewModel = currentModelType === 'new';
+            const isBaseBonusModel = !isNewModel && (modelId === '1' || modelId === '3' || modelId === '6' || modelId === '7' || modelId === '8');
+            const hasBaseCost = isBaseBonusModel || (isNewModel && data.total_base_cost > 0);
+            
+            if (hasBaseCost) {
                 html += `
                     <div class="summary-card">
                         <h3>Total Monthly Cost</h3>
@@ -392,15 +449,15 @@
                     </div>
                     <div class="summary-card">
                         <h3>Base Costs</h3>
-                        <div class="value">$${formatNumber(data.total_base_cost)}</div>
+                        <div class="value">$${formatNumber(data.total_base_cost || 0)}</div>
                     </div>
                     <div class="summary-card">
                         <h3>Bonuses</h3>
                         <div class="value">$${formatNumber(data.total_bonus)}</div>
                     </div>
                     <div class="summary-card">
-                        <h3>Counted Videos</h3>
-                        <div class="value">${formatNumber(data.total_instagram_videos)}</div>
+                        <h3>Total Videos</h3>
+                        <div class="value">${formatNumber(data.total_videos || data.total_instagram_videos || 0)}</div>
                     </div>
                     <div class="summary-card">
                         <h3>Total Views</h3>
@@ -423,7 +480,7 @@
                     </div>
                     <div class="summary-card">
                         <h3>Qualified Videos</h3>
-                        <div class="value">${formatNumber(data.total_qualified)}</div>
+                        <div class="value">${formatNumber(data.total_qualified || 0)}</div>
                     </div>
                     <div class="summary-card">
                         <h3>Total Views</h3>
@@ -443,8 +500,10 @@
             html += '<table>';
             html += '<thead><tr>';
             
-            if (modelNum === 1 || modelNum === 3) {
-                html += '<th>Creator</th><th class="number">Counted Videos</th><th class="number">Total Views</th><th class="number">Base Cost</th><th class="number">Bonus</th><th class="number">Total Cost</th>';
+            if (hasBaseCost) {
+                html += '<th>Creator</th><th class="number">Videos</th><th class="number">Total Views</th><th class="number">Base Cost</th><th class="number">Bonus</th><th class="number">Total Cost</th>';
+            } else if (isNewModel) {
+                html += '<th>Creator</th><th class="number">Total Videos</th><th class="number">Qualified Videos</th><th class="number">Total Views</th><th class="number">Bonus</th><th class="number">Total Cost</th>';
             } else {
                 html += '<th>Creator</th><th class="number">Videos</th><th class="number">Qualified</th><th class="number">Total Views</th><th class="number">Compensation</th>';
             }
@@ -455,17 +514,24 @@
                 html += '<tr>';
                 html += `<td>${creator.creator_name}</td>`;
                 
-                if (modelNum === 1 || modelNum === 3 || modelNum === 6) {
-                    html += `<td class="number">${formatNumber(creator.instagram_videos)}</td>`;
+                if (hasBaseCost) {
+                    const videos = creator.instagram_videos || creator.total_videos || 0;
+                    html += `<td class="number">${formatNumber(videos)}</td>`;
                     html += `<td class="number">${formatNumber(creator.total_views)}</td>`;
-                    html += `<td class="number">$${formatNumber(creator.total_base_cost)}</td>`;
-                    html += `<td class="number">$${formatNumber(creator.bonus)}</td>`;
+                    html += `<td class="number">$${formatNumber(creator.total_base_cost || 0)}</td>`;
+                    html += `<td class="number">$${formatNumber(creator.bonus || creator.total_bonus || 0)}</td>`;
+                    html += `<td class="number">$${formatNumber(creator.total_cost)}</td>`;
+                } else if (isNewModel) {
+                    html += `<td class="number">${formatNumber(creator.total_videos)}</td>`;
+                    html += `<td class="number">${formatNumber(creator.qualified_videos || 0)}</td>`;
+                    html += `<td class="number">${formatNumber(creator.total_views)}</td>`;
+                    html += `<td class="number">$${formatNumber(creator.total_bonus || 0)}</td>`;
                     html += `<td class="number">$${formatNumber(creator.total_cost)}</td>`;
                 } else {
                     html += `<td class="number">${formatNumber(creator.total_videos)}</td>`;
-                    html += `<td class="number">${formatNumber(creator.qualified_videos)}</td>`;
+                    html += `<td class="number">${formatNumber(creator.qualified_videos || 0)}</td>`;
                     html += `<td class="number">${formatNumber(creator.total_views)}</td>`;
-                    html += `<td class="number">$${formatNumber(creator.total_compensation)}</td>`;
+                    html += `<td class="number">$${formatNumber(creator.total_compensation || creator.total_cost)}</td>`;
                 }
                 
                 html += '</tr>';
@@ -490,11 +556,193 @@
             }
         }
         
-        function renderModelDetails(modelNum) {
+        function renderModelDetails(modelId) {
             const content = document.getElementById('modelDetailsContent');
             let html = '';
             
-            if (modelNum === 1) {
+            if (currentModelType === 'new') {
+                if (modelId === 'A') {
+                    html += '<h2>Model A: $30 Base + Individual Video Bonus (December 2025)</h2>';
+                    html += '<div class="model-details-section">';
+                    html += '<h3>How It Works</h3>';
+                    html += '<p><strong>Base Payment:</strong> $30 per video with 3,000+ views (all videos meeting this threshold)</p>';
+                    html += '<p><strong>Bonus:</strong> Each video gets a bonus based on its own view count. Bonuses are calculated per video and then summed.</p>';
+                    html += '<p><strong>Data Source:</strong> December 2025 actual data</p>';
+                    html += '</div>';
+                    html += '<div class="model-details-section">';
+                    html += '<h3>Base Structure</h3>';
+                    html += '<ul>';
+                    html += '<li><strong>$30 base</strong> per video with 3,000+ views</li>';
+                    html += '<li>Videos with less than 3,000 views receive no base payment</li>';
+                    html += '</ul>';
+                    html += '</div>';
+                    html += '<div class="model-details-section">';
+                    html += '<h3>Bonus Structure (14-Day Sum Views)</h3>';
+                    html += '<ul>';
+                    html += '<li>10,000 – 49,999 views: $45</li>';
+                    html += '<li>50,000 – 99,999 views: $170</li>';
+                    html += '<li>100,000 – 499,999 views: $470</li>';
+                    html += '<li>500,000 – 1,999,999 views: $1,270</li>';
+                    html += '<li>2,000,000 – 4,999,999 views: $2,270</li>';
+                    html += '<li>5,000,000+ views: $2,970 (capped)</li>';
+                    html += '</ul>';
+                    html += '<p><strong>Note:</strong> Videos with less than 10,000 views receive no bonus.</p>';
+                    html += '</div>';
+                } else if (modelId === 'B') {
+                    html += '<h2>Model B: $30 Base + Summed Video Bonus (December 2025)</h2>';
+                    html += '<div class="model-details-section">';
+                    html += '<h3>How It Works</h3>';
+                    html += '<p><strong>Base Payment:</strong> $30 per video with 3,000+ views (all videos meeting this threshold)</p>';
+                    html += '<p><strong>Bonus:</strong> Total bonus is calculated based on the sum of all video views for each creator. A single bonus tier is applied to the total.</p>';
+                    html += '<p><strong>Data Source:</strong> December 2025 actual data</p>';
+                    html += '</div>';
+                    html += '<div class="model-details-section">';
+                    html += '<h3>Base Structure</h3>';
+                    html += '<ul>';
+                    html += '<li><strong>$30 base</strong> per video with 3,000+ views</li>';
+                    html += '<li>Videos with less than 3,000 views receive no base payment</li>';
+                    html += '</ul>';
+                    html += '</div>';
+                    html += '<div class="model-details-section">';
+                    html += '<h3>Bonus Structure (14-Day Sum Views)</h3>';
+                    html += '<ul>';
+                    html += '<li>10,000 – 49,999 views: $45</li>';
+                    html += '<li>50,000 – 99,999 views: $170</li>';
+                    html += '<li>100,000 – 499,999 views: $470</li>';
+                    html += '<li>500,000 – 1,999,999 views: $1,270</li>';
+                    html += '<li>2,000,000 – 4,999,999 views: $2,270</li>';
+                    html += '<li>5,000,000+ views: $2,970 (capped)</li>';
+                    html += '</ul>';
+                    html += '<p><strong>Note:</strong> Creators with total views less than 10,000 receive no bonus.</p>';
+                    html += '</div>';
+                } else if (modelId === 'C') {
+                    html += '<h2>Model C: $30 Base + Individual Video Bonus (January 2026 Projection)</h2>';
+                    html += '<div class="model-details-section">';
+                    html += '<h3>How It Works</h3>';
+                    html += '<p><strong>Base Payment:</strong> $30 per video with 3,000+ views (all videos meeting this threshold)</p>';
+                    html += '<p><strong>Bonus:</strong> Each video gets a bonus based on its own view count. Bonuses are calculated per video and then summed.</p>';
+                    html += '<p><strong>Data Source:</strong> January 2026 projected data based on December 2025 with viral video assumptions</p>';
+                    html += '</div>';
+                    html += '<div class="model-details-section">';
+                    html += '<h3>Base Structure</h3>';
+                    html += '<ul>';
+                    html += '<li><strong>$30 base</strong> per video with 3,000+ views</li>';
+                    html += '<li>Videos with less than 3,000 views receive no base payment</li>';
+                    html += '</ul>';
+                    html += '</div>';
+                    html += '<div class="model-details-section">';
+                    html += '<h3>Projection Assumptions</h3>';
+                    html += '<ul>';
+                    html += '<li><strong>Viral Video Rate:</strong> 1.2% of videos with >100k views become viral</li>';
+                    html += '<li><strong>Viral Multiplier:</strong> 3x-10x view multiplier (randomly distributed)</li>';
+                    html += '<li><strong>Regular Videos:</strong> ±20% view variation from December baseline</li>';
+                    html += '<li><strong>Video Count:</strong> Same number of videos per creator as December</li>';
+                    html += '</ul>';
+                    html += '</div>';
+                    html += '<div class="model-details-section">';
+                    html += '<h3>Bonus Structure (14-Day Sum Views)</h3>';
+                    html += '<ul>';
+                    html += '<li>10,000 – 49,999 views: $45</li>';
+                    html += '<li>50,000 – 99,999 views: $170</li>';
+                    html += '<li>100,000 – 499,999 views: $470</li>';
+                    html += '<li>500,000 – 1,999,999 views: $1,270</li>';
+                    html += '<li>2,000,000 – 4,999,999 views: $2,270</li>';
+                    html += '<li>5,000,000+ views: $2,970 (capped)</li>';
+                    html += '</ul>';
+                    html += '<p><strong>Note:</strong> Videos with less than 10,000 views receive no bonus.</p>';
+                    html += '</div>';
+                } else if (modelId === 'D') {
+                    html += '<h2>Model D: $30 Base + Summed Video Bonus (January 2026 Projection)</h2>';
+                    html += '<div class="model-details-section">';
+                    html += '<h3>How It Works</h3>';
+                    html += '<p><strong>Base Payment:</strong> $30 per video with 3,000+ views (all videos meeting this threshold)</p>';
+                    html += '<p><strong>Bonus:</strong> Total bonus is calculated based on the sum of all video views for each creator. A single bonus tier is applied to the total.</p>';
+                    html += '<p><strong>Data Source:</strong> January 2026 projected data based on December 2025 with viral video assumptions</p>';
+                    html += '</div>';
+                    html += '<div class="model-details-section">';
+                    html += '<h3>Base Structure</h3>';
+                    html += '<ul>';
+                    html += '<li><strong>$30 base</strong> per video with 3,000+ views</li>';
+                    html += '<li>Videos with less than 3,000 views receive no base payment</li>';
+                    html += '</ul>';
+                    html += '</div>';
+                    html += '<div class="model-details-section">';
+                    html += '<h3>Projection Assumptions</h3>';
+                    html += '<ul>';
+                    html += '<li><strong>Viral Video Rate:</strong> 1.2% of videos with >100k views become viral</li>';
+                    html += '<li><strong>Viral Multiplier:</strong> 3x-10x view multiplier (randomly distributed)</li>';
+                    html += '<li><strong>Regular Videos:</strong> ±20% view variation from December baseline</li>';
+                    html += '<li><strong>Video Count:</strong> Same number of videos per creator as December</li>';
+                    html += '</ul>';
+                    html += '</div>';
+                    html += '<div class="model-details-section">';
+                    html += '<h3>Bonus Structure (14-Day Sum Views)</h3>';
+                    html += '<ul>';
+                    html += '<li>10,000 – 49,999 views: $45</li>';
+                    html += '<li>50,000 – 99,999 views: $170</li>';
+                    html += '<li>100,000 – 499,999 views: $470</li>';
+                    html += '<li>500,000 – 1,999,999 views: $1,270</li>';
+                    html += '<li>2,000,000 – 4,999,999 views: $2,270</li>';
+                    html += '<li>5,000,000+ views: $2,970 (capped)</li>';
+                    html += '</ul>';
+                    html += '<p><strong>Note:</strong> Creators with total views less than 10,000 receive no bonus.</p>';
+                    html += '</div>';
+                } else if (modelId === 'E') {
+                    html += '<h2>Model E: $30 Base + Individual Video Bonus (January 2026 Actual)</h2>';
+                    html += '<div class="model-details-section">';
+                    html += '<h3>How It Works</h3>';
+                    html += '<p><strong>Base Payment:</strong> $30 per video with 3,000+ views (all videos meeting this threshold)</p>';
+                    html += '<p><strong>Bonus:</strong> Each video gets a bonus based on its own view count. Bonuses are calculated per video and then summed.</p>';
+                    html += '<p><strong>Data Source:</strong> January 2026 actual data from viral.app export</p>';
+                    html += '</div>';
+                    html += '<div class="model-details-section">';
+                    html += '<h3>Base Structure</h3>';
+                    html += '<ul>';
+                    html += '<li><strong>$30 base</strong> per video with 3,000+ views</li>';
+                    html += '<li>Videos with less than 3,000 views receive no base payment</li>';
+                    html += '</ul>';
+                    html += '</div>';
+                    html += '<div class="model-details-section">';
+                    html += '<h3>Bonus Structure (14-Day Sum Views)</h3>';
+                    html += '<ul>';
+                    html += '<li>10,000 – 49,999 views: $45</li>';
+                    html += '<li>50,000 – 99,999 views: $170</li>';
+                    html += '<li>100,000 – 499,999 views: $470</li>';
+                    html += '<li>500,000 – 1,999,999 views: $1,270</li>';
+                    html += '<li>2,000,000 – 4,999,999 views: $2,270</li>';
+                    html += '<li>5,000,000+ views: $2,970 (capped)</li>';
+                    html += '</ul>';
+                    html += '<p><strong>Note:</strong> Videos with less than 10,000 views receive no bonus.</p>';
+                    html += '</div>';
+                } else if (modelId === 'F') {
+                    html += '<h2>Model F: $30 Base + Summed Video Bonus (January 2026 Actual)</h2>';
+                    html += '<div class="model-details-section">';
+                    html += '<h3>How It Works</h3>';
+                    html += '<p><strong>Base Payment:</strong> $30 per video with 3,000+ views (all videos meeting this threshold)</p>';
+                    html += '<p><strong>Bonus:</strong> Total bonus is calculated based on the sum of all video views for each creator. A single bonus tier is applied to the total.</p>';
+                    html += '<p><strong>Data Source:</strong> January 2026 actual data from viral.app export</p>';
+                    html += '</div>';
+                    html += '<div class="model-details-section">';
+                    html += '<h3>Base Structure</h3>';
+                    html += '<ul>';
+                    html += '<li><strong>$30 base</strong> per video with 3,000+ views</li>';
+                    html += '<li>Videos with less than 3,000 views receive no base payment</li>';
+                    html += '</ul>';
+                    html += '</div>';
+                    html += '<div class="model-details-section">';
+                    html += '<h3>Bonus Structure (14-Day Sum Views)</h3>';
+                    html += '<ul>';
+                    html += '<li>10,000 – 49,999 views: $45</li>';
+                    html += '<li>50,000 – 99,999 views: $170</li>';
+                    html += '<li>100,000 – 499,999 views: $470</li>';
+                    html += '<li>500,000 – 1,999,999 views: $1,270</li>';
+                    html += '<li>2,000,000 – 4,999,999 views: $2,270</li>';
+                    html += '<li>5,000,000+ views: $2,970 (capped)</li>';
+                    html += '</ul>';
+                    html += '<p><strong>Note:</strong> Creators with total views less than 10,000 receive no bonus.</p>';
+                    html += '</div>';
+                }
+            } else if (modelId === '1') {
                 html += '<h2>Current Model</h2>';
                 
                 html += '<div class="model-details-section">';
@@ -525,7 +773,7 @@
                 html += '<tr><td>20,000 - 49,999</td><td>$35</td></tr>';
                 html += '</tbody></table>';
                 html += '</div>';
-            } else if (modelNum === 2) {
+            } else if (modelId === '2') {
                 html += '<h2>10k Minimum</h2>';
                 
                 html += '<div class="model-details-section">';
@@ -552,7 +800,7 @@
                 html += '<tr><td>&lt; 10,000</td><td>$0 (No compensation)</td></tr>';
                 html += '</tbody></table>';
                 html += '</div>';
-            } else if (modelNum === 3) {
+            } else if (modelId === '3') {
                 html += '<h2>Lowered Current Model</h2>';
                 
                 html += '<div class="model-details-section">';
@@ -585,7 +833,7 @@
                 html += '<tr><td>&lt; 20,000</td><td>Proportional (views ÷ 1000)</td></tr>';
                 html += '</tbody></table>';
                 html += '</div>';
-            } else if (modelNum === 4) {
+            } else if (modelId === '4') {
                 html += '<h2>5k Minimum</h2>';
                 
                 html += '<div class="model-details-section">';
@@ -613,7 +861,7 @@
                 html += '<tr><td>&lt; 5,000</td><td>$0 (No compensation)</td></tr>';
                 html += '</tbody></table>';
                 html += '</div>';
-            } else if (modelNum === 5) {
+            } else if (modelId === '5') {
                 html += '<h2>2k Minimum</h2>';
                 
                 html += '<div class="model-details-section">';
@@ -641,7 +889,7 @@
                 html += '<tr><td>&lt; 2,000</td><td>$0 (No compensation)</td></tr>';
                 html += '</tbody></table>';
                 html += '</div>';
-            } else if (modelNum === 6) {
+            } else if (modelId === '6') {
                 html += '<h2>3k Minimum Base</h2>';
                 
                 html += '<div class="model-details-section">';
@@ -674,7 +922,7 @@
                 html += '<tr><td>20,000 - 49,999</td><td>$35</td></tr>';
                 html += '</tbody></table>';
                 html += '</div>';
-            } else if (modelNum === 7) {
+            } else if (modelId === '7') {
                 html += '<h2>Optimized Balanced Model</h2>';
                 
                 html += '<div class="model-details-section">';
@@ -718,7 +966,7 @@
                 html += '<tr><td>20,000 - 49,999</td><td>$30</td></tr>';
                 html += '</tbody></table>';
                 html += '</div>';
-            } else if (modelNum === 8) {
+            } else if (modelId === '8') {
                 html += '<h2>3k Base + CPM Bonuses</h2>';
                 
                 html += '<div class="model-details-section">';
@@ -782,9 +1030,8 @@
         
         // Initialize - load Model 1 by default
         window.onload = () => {
-            currentModel = 1;
-            document.getElementById('modelSelect').value = '1';
-            loadModel(1);
+            // Initialize with new models by default
+            switchModelType('new');
         };
     </script>
 </body>

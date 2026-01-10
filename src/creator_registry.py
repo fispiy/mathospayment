@@ -332,7 +332,52 @@ Liza	Contact account	Instagram	https://www.instagram.com/lizzflows?igsh=MjZ4Znhv
 	Mathos TT		
 	Mathos YT		
 			
-Salvador	Contact account	Instagram	https://www.instagram.com/joshuajsalvador?igsh=NTc4MTIwNjQ2YQ=="""
+Salvador	Contact account	Instagram	https://www.instagram.com/joshuajsalvador?igsh=NTc4MTIwNjQ2YQ==
+			
+Braedon	Contact account	Google Form	https://www.instagram.com/thepathwandering/	
+	Mathos Ins	brady.cranee	https://www.instagram.com/brady.cranee?igsh=MXB6NnByYTFuaGg2dA%3D%3D&utm_source=qr
+	Mathos TT	brady.cranee	https://www.tiktok.com/@brady.cranee?_r=1&_t=ZP-92jAZ2pez79
+	Mathos YT		
+			
+Sasha	Contact account	Instagram	https://www.instagram.com/typeossasha/	
+	Mathos Ins	mathwithsasha	https://www.instagram.com/mathwithsasha?igsh=eG1rbzFocnB5ejIw&utm_source=qr
+	Mathos TT	mathwithsasha	https://www.tiktok.com/@mathwithsasha?_r=1&_t=ZS-92lpCtnyUBL
+	Mathos YT	mathwithsasha	https://youtube.com/@mathwithsasha?si=VcMsVLOi2oM0q5Cp
+			
+Eason	Contact account	Referral	https://easonjiang.my.canva.site/	
+	Mathos Ins	mathingwitheason	https://www.instagram.com/mathingwitheason?igsh=eG5yNngzMGh4ZnVk&utm_source=qr
+	Mathos TT	mathingwitheason	https://www.tiktok.com/@mathingwitheason?_r=1&_t=ZP-92vxLrjspbT
+	Mathos YT	mathingwitheason	https://www.youtube.com/@mathingwitheason
+			
+Nickolai	Contact account	Instagram		
+	Mathos Ins	mathmaxxing.nickolai	https://www.instagram.com/mathmaxxing.nickolai?igsh=MXNhbnZjcm9zNTcweQ%3D%3D&utm_source=qr
+	Mathos TT	mathmaxxing.nickolai	https://www.tiktok.com/@mathmaxxing.nickolai?_r=1&_t=ZS-92pdWVLXWJI
+	Mathos YT		
+			
+Sean	Contact account	UGC Page	https://ugcseanlennard.my.canva.site/	
+	Mathos Ins		
+	Mathos TT		
+	Mathos YT		
+			
+Brady	Contact account	TikTok	https://www.tiktok.com/search/user?q=bradycreatescontent&t=1767402405988	
+	Mathos Ins		
+	Mathos TT		
+	Mathos YT		
+			
+Rishab	Contact account	Instagram		
+	Mathos Ins		
+	Mathos TT		
+	Mathos YT		
+			
+Ethan	Contact account	In Person	https://www.instagram.com/ethanislocked/	
+	Mathos Ins	ethan.studies1	https://www.instagram.com/ethan.studies1?igsh=dmhsaWF2emZ6enlz&utm_source=qr
+	Mathos TT	ethan.studies1	https://www.tiktok.com/@ethan.studies1?_r=1&_t=ZP-92wfwBtDKD0
+	Mathos YT	ethan.studies	https://youtube.com/@ethan.studies?si=RX7DVn6CFSBnyzzT
+			
+Zander	Contact account	Instagram		
+	Mathos Ins	studieswithzander	https://www.instagram.com/studieswithzander?igsh=ZDdiamF1d2VxbDlo&utm_source=qr
+	Mathos TT		
+	Mathos YT	StudieswithZander	https://www.youtube.com/@StudieswithZander"""
 
 
 def create_registry() -> CreatorRegistry:

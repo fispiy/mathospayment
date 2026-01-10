@@ -18,13 +18,32 @@ def main():
     
     # Generate data files first
     print("Generating data files...")
-    from export_dashboard_data import generate_model_1_data, generate_model_2_data, generate_model_3_data, generate_model_4_data
+    from export_dashboard_data import (
+        generate_new_model_a_data, generate_new_model_b_data,
+        generate_new_model_c_data, generate_new_model_d_data,
+        generate_new_model_e_data, generate_new_model_f_data,
+        generate_model_1_data, generate_model_2_data, generate_model_3_data, 
+        generate_model_4_data, generate_model_5_data, generate_model_6_data,
+        generate_model_7_data, generate_model_8_data
+    )
     
     try:
+        print("Generating new models (A, B, C, D, E, F)...")
+        generate_new_model_a_data()
+        generate_new_model_b_data()
+        generate_new_model_c_data()
+        generate_new_model_d_data()
+        generate_new_model_e_data()
+        generate_new_model_f_data()
+        print("Generating old models (1-8)...")
         generate_model_1_data()
         generate_model_2_data()
         generate_model_3_data()
         generate_model_4_data()
+        generate_model_5_data()
+        generate_model_6_data()
+        generate_model_7_data()
+        generate_model_8_data()
         print("✓ Data files generated successfully\n")
     except Exception as e:
         print(f"Error generating data: {e}")

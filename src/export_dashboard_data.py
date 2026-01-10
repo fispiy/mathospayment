@@ -369,8 +369,398 @@ def generate_model_8_data():
 
     return data
 
+def generate_new_model_a_data():
+    """Generate Model A data ($30 Base + Individual Video Bonus) from simulation."""
+    data_dir = Path(__file__).parent.parent / 'data'
+    sim_file = data_dir / 'new_bonus_models_simulation.json'
+    
+    if not sim_file.exists():
+        print("Warning: new_bonus_models_simulation.json not found. Running simulation...")
+        from simulate_new_bonus_models import main as run_simulation
+        run_simulation()
+    
+    with open(sim_file, 'r') as f:
+        sim_data = json.load(f)
+    
+    dec_data = sim_data['december_2025']['individual_bonus']
+    
+    # Convert to dashboard format
+    data = {
+        'model_name': dec_data['model_name'],
+        'total_cost': dec_data['total_cost'],
+        'total_bonus': dec_data['total_bonus'],
+        'total_base_cost': dec_data.get('total_base_cost', 0.0),
+        'total_videos': dec_data['total_videos'],
+        'total_views': dec_data['total_views'],
+        'cost_per_view': dec_data['cost_per_view'],
+        'creators': [
+            {
+                'creator_name': c['creator_name'],
+                'total_videos': c['total_videos'],
+                'qualified_videos': c.get('qualified_videos', 0),
+                'total_views': c['total_views'],
+                'total_base_cost': c.get('total_base_cost', 0.0),
+                'total_bonus': c['total_bonus'],
+                'total_cost': c['total_cost']
+            }
+            for c in sorted(dec_data['creators'], key=lambda x: x['total_cost'], reverse=True)
+        ]
+    }
+    
+    with open(data_dir / 'new_model_a_data.json', 'w') as f:
+        json.dump(data, f, indent=2)
+    
+    return data
+
+def generate_new_model_b_data():
+    """Generate Model B data ($30 Base + Summed Video Bonus) from simulation."""
+    data_dir = Path(__file__).parent.parent / 'data'
+    sim_file = data_dir / 'new_bonus_models_simulation.json'
+    
+    if not sim_file.exists():
+        print("Warning: new_bonus_models_simulation.json not found. Running simulation...")
+        from simulate_new_bonus_models import main as run_simulation
+        run_simulation()
+    
+    with open(sim_file, 'r') as f:
+        sim_data = json.load(f)
+    
+    dec_data = sim_data['december_2025']['summed_bonus']
+    
+    # Convert to dashboard format
+    data = {
+        'model_name': dec_data['model_name'],
+        'total_cost': dec_data['total_cost'],
+        'total_bonus': dec_data['total_bonus'],
+        'total_base_cost': dec_data.get('total_base_cost', 0.0),
+        'total_videos': dec_data['total_videos'],
+        'total_views': dec_data['total_views'],
+        'cost_per_view': dec_data['cost_per_view'],
+        'creators': [
+            {
+                'creator_name': c['creator_name'],
+                'total_videos': c['total_videos'],
+                'qualified_videos': c.get('qualified_videos', 0),
+                'total_views': c['total_views'],
+                'total_base_cost': c.get('total_base_cost', 0.0),
+                'total_bonus': c['total_bonus'],
+                'total_cost': c['total_cost']
+            }
+            for c in sorted(dec_data['creators'], key=lambda x: x['total_cost'], reverse=True)
+        ]
+    }
+    
+    with open(data_dir / 'new_model_b_data.json', 'w') as f:
+        json.dump(data, f, indent=2)
+    
+    return data
+
+def generate_new_model_c_data():
+    """Generate Model C data ($30 Base + Individual Video Bonus - January 2026 Projection) from simulation."""
+    data_dir = Path(__file__).parent.parent / 'data'
+    sim_file = data_dir / 'new_bonus_models_simulation.json'
+    
+    if not sim_file.exists():
+        print("Warning: new_bonus_models_simulation.json not found. Running simulation...")
+        from simulate_new_bonus_models import main as run_simulation
+        run_simulation()
+    
+    with open(sim_file, 'r') as f:
+        sim_data = json.load(f)
+    
+    jan_data = sim_data['january_2026']['individual_bonus']
+    
+    # Convert to dashboard format
+    data = {
+        'model_name': 'Model C: $30 Base + Individual Video Bonus (Jan 2026 Projection)',
+        'total_cost': jan_data['total_cost'],
+        'total_bonus': jan_data['total_bonus'],
+        'total_base_cost': jan_data.get('total_base_cost', 0.0),
+        'total_videos': jan_data['total_videos'],
+        'total_views': jan_data['total_views'],
+        'cost_per_view': jan_data['cost_per_view'],
+        'creators': [
+            {
+                'creator_name': c['creator_name'],
+                'total_videos': c['total_videos'],
+                'qualified_videos': c.get('qualified_videos', 0),
+                'total_views': c['total_views'],
+                'total_base_cost': c.get('total_base_cost', 0.0),
+                'total_bonus': c['total_bonus'],
+                'total_cost': c['total_cost']
+            }
+            for c in sorted(jan_data['creators'], key=lambda x: x['total_cost'], reverse=True)
+        ]
+    }
+    
+    with open(data_dir / 'new_model_c_data.json', 'w') as f:
+        json.dump(data, f, indent=2)
+    
+    return data
+
+def generate_new_model_d_data():
+    """Generate Model D data ($30 Base + Summed Video Bonus - January 2026 Projection) from simulation."""
+    data_dir = Path(__file__).parent.parent / 'data'
+    sim_file = data_dir / 'new_bonus_models_simulation.json'
+    
+    if not sim_file.exists():
+        print("Warning: new_bonus_models_simulation.json not found. Running simulation...")
+        from simulate_new_bonus_models import main as run_simulation
+        run_simulation()
+    
+    with open(sim_file, 'r') as f:
+        sim_data = json.load(f)
+    
+    jan_data = sim_data['january_2026']['summed_bonus']
+    
+    # Convert to dashboard format
+    data = {
+        'model_name': 'Model D: $30 Base + Summed Video Bonus (Jan 2026 Projection)',
+        'total_cost': jan_data['total_cost'],
+        'total_bonus': jan_data['total_bonus'],
+        'total_base_cost': jan_data.get('total_base_cost', 0.0),
+        'total_videos': jan_data['total_videos'],
+        'total_views': jan_data['total_views'],
+        'cost_per_view': jan_data['cost_per_view'],
+        'creators': [
+            {
+                'creator_name': c['creator_name'],
+                'total_videos': c['total_videos'],
+                'qualified_videos': c.get('qualified_videos', 0),
+                'total_views': c['total_views'],
+                'total_base_cost': c.get('total_base_cost', 0.0),
+                'total_bonus': c['total_bonus'],
+                'total_cost': c['total_cost']
+            }
+            for c in sorted(jan_data['creators'], key=lambda x: x['total_cost'], reverse=True)
+        ]
+    }
+    
+    with open(data_dir / 'new_model_d_data.json', 'w') as f:
+        json.dump(data, f, indent=2)
+    
+    return data
+
+def calculate_bonus_for_views(views: int) -> float:
+    """Calculate bonus for a given view count using new tier structure."""
+    if views < 10000:
+        return 0.0
+    elif views >= 5000000:
+        return 2970.0
+    elif views >= 2000000:
+        return 2270.0
+    elif views >= 500000:
+        return 1270.0
+    elif views >= 100000:
+        return 470.0
+    elif views >= 50000:
+        return 170.0
+    elif views >= 10000:
+        return 45.0
+    return 0.0
+
+def generate_new_model_e_data():
+    """Generate Model E data (Individual Video Bonus - January 2026 Actual Data).
+    
+    Model: $30 base per video (3k minimum views) + individual video bonuses.
+    """
+    from process_january_data import process_january_data
+    from pathlib import Path
+    
+    data_dir = Path(__file__).parent.parent / 'data'
+    january_dir = Path(__file__).parent.parent / 'januaryinfo'
+    csv_files = list(january_dir.glob('videos_*.csv'))
+    
+    if not csv_files:
+        print("Warning: No January CSV file found. Model E will be empty.")
+        data = {
+            'model_name': 'Model E: $30 Base + Individual Video Bonus (Jan 2026 Actual)',
+            'total_cost': 0.0,
+            'total_bonus': 0.0,
+            'total_base_cost': 0.0,
+            'total_videos': 0,
+            'total_views': 0,
+            'cost_per_view': 0.0,
+            'creators': []
+        }
+        with open(data_dir / 'new_model_e_data.json', 'w') as f:
+            json.dump(data, f, indent=2)
+        return data
+    
+    # Use the most recent CSV file
+    csv_file = max(csv_files, key=lambda p: p.stat().st_mtime)
+    creator_videos = process_january_data(csv_file)
+    
+    BASE_RATE = 30.0
+    MIN_VIEWS_FOR_BASE = 3000
+    
+    # Calculate base + individual video bonuses
+    total_cost = 0.0
+    total_bonus = 0.0
+    total_base_cost = 0.0
+    total_videos = 0
+    total_views = 0
+    creators_data = []
+    
+    for creator_name, videos in creator_videos.items():
+        creator_base_cost = 0.0
+        creator_bonus = 0.0
+        creator_total_views = 0
+        qualified_videos = 0
+        
+        for video in videos:
+            views = video.get('views', 0)
+            creator_total_views += views
+            
+            # Base payment: $30 per video with 3k+ views
+            if views >= MIN_VIEWS_FOR_BASE:
+                creator_base_cost += BASE_RATE
+                qualified_videos += 1
+            
+            # Calculate bonus for this individual video
+            video_bonus = calculate_bonus_for_views(views)
+            creator_bonus += video_bonus
+        
+        creator_total_cost = creator_base_cost + creator_bonus
+        
+        creators_data.append({
+            'creator_name': creator_name,
+            'total_videos': len(videos),
+            'qualified_videos': qualified_videos,
+            'total_views': creator_total_views,
+            'total_base_cost': creator_base_cost,
+            'total_bonus': creator_bonus,
+            'total_cost': creator_total_cost
+        })
+        
+        total_cost += creator_total_cost
+        total_bonus += creator_bonus
+        total_base_cost += creator_base_cost
+        total_videos += len(videos)
+        total_views += creator_total_views
+    
+    cost_per_view = total_cost / total_views if total_views > 0 else 0.0
+    
+    data = {
+        'model_name': 'Model E: $30 Base + Individual Video Bonus (Jan 2026 Actual)',
+        'total_cost': total_cost,
+        'total_bonus': total_bonus,
+        'total_base_cost': total_base_cost,
+        'total_videos': total_videos,
+        'total_views': total_views,
+        'cost_per_view': cost_per_view,
+        'creators': sorted(creators_data, key=lambda x: x['total_cost'], reverse=True)
+    }
+    
+    with open(data_dir / 'new_model_e_data.json', 'w') as f:
+        json.dump(data, f, indent=2)
+    
+    return data
+
+def generate_new_model_f_data():
+    """Generate Model F data (Summed Video Bonus - January 2026 Actual Data).
+    
+    Model: $30 base per video (3k minimum views) + summed video bonus.
+    """
+    from process_january_data import process_january_data
+    from pathlib import Path
+    
+    data_dir = Path(__file__).parent.parent / 'data'
+    january_dir = Path(__file__).parent.parent / 'januaryinfo'
+    csv_files = list(january_dir.glob('videos_*.csv'))
+    
+    if not csv_files:
+        print("Warning: No January CSV file found. Model F will be empty.")
+        data = {
+            'model_name': 'Model F: $30 Base + Summed Video Bonus (Jan 2026 Actual)',
+            'total_cost': 0.0,
+            'total_bonus': 0.0,
+            'total_base_cost': 0.0,
+            'total_videos': 0,
+            'total_views': 0,
+            'cost_per_view': 0.0,
+            'creators': []
+        }
+        with open(data_dir / 'new_model_f_data.json', 'w') as f:
+            json.dump(data, f, indent=2)
+        return data
+    
+    # Use the most recent CSV file
+    csv_file = max(csv_files, key=lambda p: p.stat().st_mtime)
+    creator_videos = process_january_data(csv_file)
+    
+    BASE_RATE = 30.0
+    MIN_VIEWS_FOR_BASE = 3000
+    
+    # Calculate base + summed video bonuses
+    total_cost = 0.0
+    total_bonus = 0.0
+    total_base_cost = 0.0
+    total_videos = 0
+    total_views = 0
+    creators_data = []
+    
+    for creator_name, videos in creator_videos.items():
+        creator_total_views = sum(video.get('views', 0) for video in videos)
+        
+        # Base payment: $30 per video with 3k+ views (all videos that meet threshold)
+        creator_base_cost = 0.0
+        qualified_videos = 0
+        for video in videos:
+            views = video.get('views', 0)
+            if views >= MIN_VIEWS_FOR_BASE:
+                creator_base_cost += BASE_RATE
+                qualified_videos += 1
+        
+        # Calculate bonus based on summed views
+        creator_bonus = calculate_bonus_for_views(creator_total_views)
+        
+        creator_total_cost = creator_base_cost + creator_bonus
+        
+        creators_data.append({
+            'creator_name': creator_name,
+            'total_videos': len(videos),
+            'qualified_videos': qualified_videos,
+            'total_views': creator_total_views,
+            'total_base_cost': creator_base_cost,
+            'total_bonus': creator_bonus,
+            'total_cost': creator_total_cost
+        })
+        
+        total_cost += creator_total_cost
+        total_bonus += creator_bonus
+        total_base_cost += creator_base_cost
+        total_videos += len(videos)
+        total_views += creator_total_views
+    
+    cost_per_view = total_cost / total_views if total_views > 0 else 0.0
+    
+    data = {
+        'model_name': 'Model F: $30 Base + Summed Video Bonus (Jan 2026 Actual)',
+        'total_cost': total_cost,
+        'total_bonus': total_bonus,
+        'total_base_cost': total_base_cost,
+        'total_videos': total_videos,
+        'total_views': total_views,
+        'cost_per_view': cost_per_view,
+        'creators': sorted(creators_data, key=lambda x: x['total_cost'], reverse=True)
+    }
+    
+    with open(data_dir / 'new_model_f_data.json', 'w') as f:
+        json.dump(data, f, indent=2)
+    
+    return data
+
 if __name__ == '__main__':
     print("Generating data files...")
+    print("Generating new models (A, B, C, D, E, F)...")
+    generate_new_model_a_data()
+    generate_new_model_b_data()
+    generate_new_model_c_data()
+    generate_new_model_d_data()
+    generate_new_model_e_data()
+    generate_new_model_f_data()
+    print("Generating old models (1-8)...")
     generate_model_1_data()
     generate_model_2_data()
     generate_model_3_data()
@@ -379,5 +769,7 @@ if __name__ == '__main__':
     generate_model_6_data()
     generate_model_7_data()
     generate_model_8_data()
-    print("Done! Data files generated: model1_data.json through model8_data.json")
+    print("Done! Data files generated:")
+    print("  New models: new_model_a_data.json through new_model_f_data.json")
+    print("  Old models: model1_data.json through model8_data.json")
 
