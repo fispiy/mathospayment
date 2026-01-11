@@ -1,227 +1,227 @@
 {
   "model_name": "Model D: $30 Base + Summed Video Bonus (Jan 2026 Projection)",
-  "total_cost": 9710.0,
-  "total_bonus": 5720.0,
-  "total_base_cost": 3990.0,
-  "total_videos": 693,
-  "total_views": 4622893,
-  "cost_per_view": 0.0021004163410228184,
+  "total_cost": 31775.0,
+  "total_bonus": 22055.0,
+  "total_base_cost": 9720.0,
+  "total_videos": 1600,
+  "total_views": 19035537,
+  "cost_per_view": 0.0016692463154572418,
   "creators": [
     {
-      "creator_name": "Kiru",
-      "total_videos": 22,
-      "qualified_videos": 22,
-      "total_views": 1401858,
-      "total_base_cost": 660.0,
-      "total_bonus": 1270.0,
-      "total_cost": 1930.0
+      "creator_name": "Kong",
+      "total_videos": 214,
+      "qualified_videos": 45,
+      "total_views": 4604028,
+      "total_base_cost": 1350.0,
+      "total_bonus": 2270.0,
+      "total_cost": 3620.0
+    },
+    {
+      "creator_name": "Riley",
+      "total_videos": 46,
+      "qualified_videos": 6,
+      "total_views": 2385900,
+      "total_base_cost": 180.0,
+      "total_bonus": 2270.0,
+      "total_cost": 2450.0
     },
     {
       "creator_name": "Jasper",
-      "total_videos": 73,
-      "qualified_videos": 15,
-      "total_views": 1310496,
-      "total_base_cost": 450.0,
+      "total_videos": 168,
+      "qualified_videos": 32,
+      "total_views": 760521,
+      "total_base_cost": 960.0,
       "total_bonus": 1270.0,
-      "total_cost": 1720.0
+      "total_cost": 2230.0
     },
     {
-      "creator_name": "Yunski",
-      "total_videos": 27,
-      "qualified_videos": 19,
-      "total_views": 170658,
-      "total_base_cost": 570.0,
-      "total_bonus": 470.0,
-      "total_cost": 1040.0
-    },
-    {
-      "creator_name": "Kong",
-      "total_videos": 93,
-      "qualified_videos": 17,
-      "total_views": 466944,
-      "total_base_cost": 510.0,
-      "total_bonus": 470.0,
-      "total_cost": 980.0
+      "creator_name": "Jxhn Up",
+      "total_videos": 122,
+      "qualified_videos": 29,
+      "total_views": 950282,
+      "total_base_cost": 870.0,
+      "total_bonus": 1270.0,
+      "total_cost": 2140.0
     },
     {
       "creator_name": "Daniel",
-      "total_videos": 63,
-      "qualified_videos": 12,
-      "total_views": 365557,
-      "total_base_cost": 360.0,
-      "total_bonus": 470.0,
-      "total_cost": 830.0
+      "total_videos": 145,
+      "qualified_videos": 28,
+      "total_views": 1387150,
+      "total_base_cost": 840.0,
+      "total_bonus": 1270.0,
+      "total_cost": 2110.0
+    },
+    {
+      "creator_name": "Arnab",
+      "total_videos": 96,
+      "qualified_videos": 20,
+      "total_views": 1709186,
+      "total_base_cost": 600.0,
+      "total_bonus": 1270.0,
+      "total_cost": 1870.0
+    },
+    {
+      "creator_name": "Huzaifa",
+      "total_videos": 80,
+      "qualified_videos": 16,
+      "total_views": 1216398,
+      "total_base_cost": 480.0,
+      "total_bonus": 1270.0,
+      "total_cost": 1750.0
+    },
+    {
+      "creator_name": "John Sellers",
+      "total_videos": 46,
+      "qualified_videos": 14,
+      "total_views": 1224635,
+      "total_base_cost": 420.0,
+      "total_bonus": 1270.0,
+      "total_cost": 1690.0
+    },
+    {
+      "creator_name": "Thanush",
+      "total_videos": 57,
+      "qualified_videos": 14,
+      "total_views": 1149528,
+      "total_base_cost": 420.0,
+      "total_bonus": 1270.0,
+      "total_cost": 1690.0
+    },
+    {
+      "creator_name": "Yunski",
+      "total_videos": 62,
+      "qualified_videos": 10,
+      "total_views": 570801,
+      "total_base_cost": 300.0,
+      "total_bonus": 1270.0,
+      "total_cost": 1570.0
+    },
+    {
+      "creator_name": "Kiru",
+      "total_videos": 50,
+      "qualified_videos": 9,
+      "total_views": 546869,
+      "total_base_cost": 270.0,
+      "total_bonus": 1270.0,
+      "total_cost": 1540.0
+    },
+    {
+      "creator_name": "Cary",
+      "total_videos": 41,
+      "qualified_videos": 8,
+      "total_views": 522400,
+      "total_base_cost": 240.0,
+      "total_bonus": 1270.0,
+      "total_cost": 1510.0
+    },
+    {
+      "creator_name": "The Mathcentral",
+      "total_videos": 15,
+      "qualified_videos": 4,
+      "total_views": 544181,
+      "total_base_cost": 120.0,
+      "total_bonus": 1270.0,
+      "total_cost": 1390.0
     },
     {
       "creator_name": "Jill",
-      "total_videos": 54,
+      "total_videos": 124,
+      "qualified_videos": 27,
+      "total_views": 384017,
+      "total_base_cost": 810.0,
+      "total_bonus": 470.0,
+      "total_cost": 1280.0
+    },
+    {
+      "creator_name": "Nadra",
+      "total_videos": 41,
       "qualified_videos": 9,
-      "total_views": 301417,
+      "total_views": 215507,
       "total_base_cost": 270.0,
       "total_bonus": 470.0,
       "total_cost": 740.0
     },
     {
-      "creator_name": "Jxhn Up",
-      "total_videos": 53,
+      "creator_name": "Sarah",
+      "total_videos": 57,
+      "qualified_videos": 8,
+      "total_views": 162370,
+      "total_base_cost": 240.0,
+      "total_bonus": 470.0,
+      "total_cost": 710.0
+    },
+    {
+      "creator_name": "JP",
+      "total_videos": 57,
       "qualified_videos": 7,
-      "total_views": 77807,
+      "total_views": 135998,
+      "total_base_cost": 210.0,
+      "total_bonus": 470.0,
+      "total_cost": 680.0
+    },
+    {
+      "creator_name": "Yaz",
+      "total_videos": 34,
+      "qualified_videos": 7,
+      "total_views": 144134,
+      "total_base_cost": 210.0,
+      "total_bonus": 470.0,
+      "total_cost": 680.0
+    },
+    {
+      "creator_name": "Gustavo",
+      "total_videos": 32,
+      "qualified_videos": 6,
+      "total_views": 118759,
+      "total_base_cost": 180.0,
+      "total_bonus": 470.0,
+      "total_cost": 650.0
+    },
+    {
+      "creator_name": "Ann",
+      "total_videos": 32,
+      "qualified_videos": 8,
+      "total_views": 86184,
+      "total_base_cost": 240.0,
+      "total_bonus": 170.0,
+      "total_cost": 410.0
+    },
+    {
+      "creator_name": "Allen",
+      "total_videos": 23,
+      "qualified_videos": 7,
+      "total_views": 56611,
       "total_base_cost": 210.0,
       "total_bonus": 170.0,
       "total_cost": 380.0
     },
     {
-      "creator_name": "Huzaifa",
-      "total_videos": 35,
-      "qualified_videos": 6,
-      "total_views": 66790,
-      "total_base_cost": 180.0,
+      "creator_name": "Kevin Rhee",
+      "total_videos": 27,
+      "qualified_videos": 4,
+      "total_views": 73692,
+      "total_base_cost": 120.0,
       "total_bonus": 170.0,
-      "total_cost": 350.0
+      "total_cost": 290.0
     },
     {
-      "creator_name": "Arnab",
-      "total_videos": 42,
-      "qualified_videos": 5,
-      "total_views": 87273,
-      "total_base_cost": 150.0,
-      "total_bonus": 170.0,
-      "total_cost": 320.0
-    },
-    {
-      "creator_name": "Cary",
-      "total_videos": 18,
-      "qualified_videos": 5,
-      "total_views": 63946,
-      "total_base_cost": 150.0,
-      "total_bonus": 170.0,
-      "total_cost": 320.0
-    },
-    {
-      "creator_name": "Thanush",
-      "total_videos": 25,
+      "creator_name": "Nevin",
+      "total_videos": 20,
       "qualified_videos": 2,
-      "total_views": 58505,
+      "total_views": 53226,
       "total_base_cost": 60.0,
       "total_bonus": 170.0,
       "total_cost": 230.0
     },
     {
       "creator_name": "Studyindark",
-      "total_videos": 5,
+      "total_videos": 11,
       "qualified_videos": 4,
-      "total_views": 23117,
+      "total_views": 33160,
       "total_base_cost": 120.0,
       "total_bonus": 45.0,
       "total_cost": 165.0
-    },
-    {
-      "creator_name": "John Sellers",
-      "total_videos": 20,
-      "qualified_videos": 2,
-      "total_views": 45451,
-      "total_base_cost": 60.0,
-      "total_bonus": 45.0,
-      "total_cost": 105.0
-    },
-    {
-      "creator_name": "Sarah",
-      "total_videos": 25,
-      "qualified_videos": 1,
-      "total_views": 38172,
-      "total_base_cost": 30.0,
-      "total_bonus": 45.0,
-      "total_cost": 75.0
-    },
-    {
-      "creator_name": "JP",
-      "total_videos": 25,
-      "qualified_videos": 1,
-      "total_views": 22955,
-      "total_base_cost": 30.0,
-      "total_bonus": 45.0,
-      "total_cost": 75.0
-    },
-    {
-      "creator_name": "Riley",
-      "total_videos": 20,
-      "qualified_videos": 1,
-      "total_views": 26143,
-      "total_base_cost": 30.0,
-      "total_bonus": 45.0,
-      "total_cost": 75.0
-    },
-    {
-      "creator_name": "Nadra",
-      "total_videos": 18,
-      "qualified_videos": 1,
-      "total_views": 11194,
-      "total_base_cost": 30.0,
-      "total_bonus": 45.0,
-      "total_cost": 75.0
-    },
-    {
-      "creator_name": "Yaz",
-      "total_videos": 15,
-      "qualified_videos": 1,
-      "total_views": 16741,
-      "total_base_cost": 30.0,
-      "total_bonus": 45.0,
-      "total_cost": 75.0
-    },
-    {
-      "creator_name": "Kevin Rhee",
-      "total_videos": 12,
-      "qualified_videos": 1,
-      "total_views": 21139,
-      "total_base_cost": 30.0,
-      "total_bonus": 45.0,
-      "total_cost": 75.0
-    },
-    {
-      "creator_name": "Allen",
-      "total_videos": 10,
-      "qualified_videos": 1,
-      "total_views": 10372,
-      "total_base_cost": 30.0,
-      "total_bonus": 45.0,
-      "total_cost": 75.0
-    },
-    {
-      "creator_name": "The Mathcentral",
-      "total_videos": 1,
-      "qualified_videos": 1,
-      "total_views": 31281,
-      "total_base_cost": 30.0,
-      "total_bonus": 45.0,
-      "total_cost": 75.0
-    },
-    {
-      "creator_name": "Ann",
-      "total_videos": 14,
-      "qualified_videos": 0,
-      "total_views": 3219,
-      "total_base_cost": 0.0,
-      "total_bonus": 0.0,
-      "total_cost": 0.0
-    },
-    {
-      "creator_name": "Gustavo",
-      "total_videos": 14,
-      "qualified_videos": 0,
-      "total_views": 0,
-      "total_base_cost": 0.0,
-      "total_bonus": 0.0,
-      "total_cost": 0.0
-    },
-    {
-      "creator_name": "Nevin",
-      "total_videos": 9,
-      "qualified_videos": 0,
-      "total_views": 1858,
-      "total_base_cost": 0.0,
-      "total_bonus": 0.0,
-      "total_cost": 0.0
     }
   ]
 }

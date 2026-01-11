@@ -271,119 +271,250 @@ def calculate_summed_video_bonus_model(creator_videos: Dict[str, List[Dict]]) ->
     return results
 
 
-def project_january_2026_data(december_data: Dict[str, List[Dict]], january_target_percentage: float = 0.012) -> Dict[str, List[Dict]]:
+def project_january_2026_data(december_data: Dict[str, List[Dict]], january_target_percentage: float = 0.012, target_total_videos: int = 1600) -> Dict[str, List[Dict]]:
     """
     Project January 2026 data based on December 2025 data.
     
+    Generates 1600 videos total using statistical sampling from December patterns.
+    
     Assumptions:
-    - Same number of videos per creator
+    - January: 1600 total videos (scaled from December)
     - December: ~0.8% of videos are >100k views
-    - January: ~1.2% of videos should be >100k views (target)
-    - Videos that cross the 100k threshold get boosted (3x-10x multiplier)
-    - Other videos maintain similar view counts (with small variation)
+    - January: ~1.2% of videos should be >100k views (target = 19 videos)
+    - Uses December's view distribution patterns for realistic sampling
+    - Videos are distributed across creators proportionally to December
     
     Args:
         december_data: December 2025 video data
         january_target_percentage: Target percentage of videos >100k in January (default 1.2%)
+        target_total_videos: Target total number of videos for January (default 1600)
     """
     import random
     random.seed(42)  # For reproducibility
     
-    # Count total videos and videos >100k in December
-    # Store videos with their index for accurate matching
-    all_videos = []
-    high_view_videos = []  # Videos already >100k: (creator_name, video_index, views)
-    candidate_videos = []   # Videos that can be boosted to cross 100k threshold
-    
+    # Extract all December videos and their view counts
+    december_videos = []
+    december_creators = []
     for creator_name, videos in december_data.items():
-        for video_idx, video in enumerate(videos):
+        for video in videos:
             views = video.get('views', 0)
-            all_videos.append((creator_name, video_idx, views))
-            if views >= 100000:
-                high_view_videos.append((creator_name, video_idx, views))
-            elif views >= 20000:  # Candidates: videos with 20k+ views can be boosted to cross 100k
-                candidate_videos.append((creator_name, video_idx, views))
-    
-    total_videos = len(all_videos)
-    december_high_count = len(high_view_videos)
-    december_percentage = december_high_count / total_videos if total_videos > 0 else 0
-    
-    # Calculate target: 1.2% of total videos should be >100k in January
-    target_high_count = max(1, int(total_videos * january_target_percentage))
-    additional_needed = max(0, target_high_count - december_high_count)
-    
-    print(f"December: {december_high_count}/{total_videos} videos >100k ({december_percentage*100:.2f}%)")
-    print(f"January target: {target_high_count}/{total_videos} videos >100k ({january_target_percentage*100:.2f}%)")
-    print(f"Need to boost {additional_needed} additional videos to cross 100k threshold")
-    
-    # Select videos to boost:
-    # 1. All existing >100k videos get boosted (3x-10x)
-    # 2. Additional videos from candidate pool get boosted to cross 100k
-    videos_to_boost = list(high_view_videos)  # Start with existing >100k
-    
-    if additional_needed > 0 and len(candidate_videos) > 0:
-        # Select additional videos from candidate pool (prioritize higher-view videos)
-        # Sort by views descending to prioritize videos closer to 100k
-        candidate_videos_sorted = sorted(candidate_videos, key=lambda x: x[2], reverse=True)
-        num_to_select = min(additional_needed, len(candidate_videos_sorted))
-        # Select from top candidates (higher views = more likely to cross threshold)
-        selected_candidates = candidate_videos_sorted[:num_to_select]
-        videos_to_boost.extend(selected_candidates)
-    
-    # Create a set of (creator_name, video_index) tuples for quick lookup
-    boost_set = set((name, idx) for name, idx, _ in videos_to_boost)
-    
-    # Project January data
-    january_data = {}
-    for creator_name, videos in december_data.items():
-        january_videos = []
-        
-        for video_idx, video in enumerate(videos):
-            views = video.get('views', 0)
-            
-            # Check if this video should be boosted using (creator_name, video_index)
-            should_boost = (creator_name, video_idx) in boost_set
-            
-            if should_boost:
-                if views >= 100000:
-                    # Already >100k: apply 3x-10x multiplier
-                    multiplier = random.uniform(3.0, 10.0)
-                    new_views = int(views * multiplier)
-                else:
-                    # Candidate video: boost to cross 100k threshold
-                    # For videos 20k-99k, apply multiplier to ensure they cross 100k
-                    # Lower view videos need higher multipliers
-                    if views >= 50000:
-                        multiplier = random.uniform(2.0, 5.0)  # 2x-5x for 50k-99k
-                    elif views >= 30000:
-                        multiplier = random.uniform(3.5, 6.0)  # 3.5x-6x for 30k-49k
-                    else:
-                        multiplier = random.uniform(5.0, 8.0)  # 5x-8x for 20k-29k
-                    new_views = max(100001, int(views * multiplier))  # Ensure >100k
-                is_viral = True
-            else:
-                # Regular video: small variation (±20%)
-                variation = random.uniform(0.8, 1.2)
-                new_views = int(views * variation)
-                is_viral = False
-            
-            january_videos.append({
-                'views': new_views,
+            december_videos.append({
+                'views': views,
                 'platform': video.get('platform', 'instagram'),
-                'publishedDate': video.get('publishedDate', '2026-01-01'),
-                'is_viral': is_viral
+                'creator': creator_name
             })
-        
-        january_data[creator_name] = january_videos
+            december_creators.append(creator_name)
     
-    # Verify January percentage
+    december_total = len(december_videos)
+    december_high_count = sum(1 for v in december_videos if v['views'] >= 100000)
+    december_percentage = december_high_count / december_total if december_total > 0 else 0
+    
+    # Calculate target: 1.2% of 1600 videos = 19.2, round to 19
+    target_high_count = max(1, int(target_total_videos * january_target_percentage))
+    
+    print(f"December: {december_high_count}/{december_total} videos >100k ({december_percentage*100:.2f}%)")
+    print(f"January target: {target_high_count}/{target_total_videos} videos >100k ({january_target_percentage*100:.2f}%)")
+    print(f"Scaling from {december_total} to {target_total_videos} videos ({target_total_videos/december_total:.2f}x)")
+    
+    # Extract view distribution patterns from December
+    december_views = [v['views'] for v in december_videos]
+    
+    # Group December videos by view ranges for realistic sampling
+    view_ranges = {
+        'viral': [v for v in december_views if v >= 100000],
+        'high': [v for v in december_views if 50000 <= v < 100000],
+        'medium': [v for v in december_views if 10000 <= v < 50000],
+        'low': [v for v in december_views if 3000 <= v < 10000],
+        'very_low': [v for v in december_views if v < 3000],
+    }
+    
+    # Calculate how many videos in each range for January
+    scale_factor = target_total_videos / december_total
+    range_counts = {
+        'viral': target_high_count,  # Target viral count
+        'high': max(1, int(len(view_ranges['high']) * scale_factor)),
+        'medium': max(1, int(len(view_ranges['medium']) * scale_factor)),
+        'low': max(1, int(len(view_ranges['low']) * scale_factor)),
+        'very_low': max(1, int(len(view_ranges['very_low']) * scale_factor)),
+    }
+    
+    # Adjust to ensure total = target_total_videos
+    current_total = sum(range_counts.values())
+    if current_total != target_total_videos:
+        diff = target_total_videos - current_total
+        # Adjust the largest non-viral category
+        if diff > 0:
+            range_counts['very_low'] += diff
+        else:
+            range_counts['very_low'] = max(0, range_counts['very_low'] + diff)
+    
+    print(f"\nView range distribution:")
+    print(f"  Viral (>100k): {range_counts['viral']} videos")
+    print(f"  High (50k-99k): {range_counts['high']} videos")
+    print(f"  Medium (10k-49k): {range_counts['medium']} videos")
+    print(f"  Low (3k-9k): {range_counts['low']} videos")
+    print(f"  Very Low (<3k): {range_counts['very_low']} videos")
+    
+    # Generate January videos by sampling from December patterns
+    january_videos_list = []
+    
+    # Generate viral videos (>100k)
+    if range_counts['viral'] > 0:
+        if len(view_ranges['viral']) > 0:
+            # Sample from existing viral videos and apply multipliers
+            for _ in range(range_counts['viral']):
+                base_views = random.choice(view_ranges['viral'])
+                multiplier = random.uniform(3.0, 10.0)
+                new_views = int(base_views * multiplier)
+                january_videos_list.append({
+                    'views': new_views,
+                    'is_viral': True,
+                    'range': 'viral'
+                })
+        else:
+            # No viral videos in December, create new ones from high performers
+            high_candidates = view_ranges['high'] if view_ranges['high'] else view_ranges['medium']
+            if not high_candidates:
+                high_candidates = [50000]  # Fallback
+            for _ in range(range_counts['viral']):
+                base_views = random.choice(high_candidates)
+                multiplier = random.uniform(2.0, 8.0)
+                new_views = max(100001, int(base_views * multiplier))
+                january_videos_list.append({
+                    'views': new_views,
+                    'is_viral': True,
+                    'range': 'viral'
+                })
+    
+    # Generate high videos (50k-99k)
+    for _ in range(range_counts['high']):
+        if view_ranges['high']:
+            base_views = random.choice(view_ranges['high'])
+            variation = random.uniform(0.8, 1.3)
+            new_views = max(50000, min(99999, int(base_views * variation)))
+        else:
+            # Sample from medium and scale up
+            base_views = random.choice(view_ranges['medium']) if view_ranges['medium'] else 25000
+            multiplier = random.uniform(2.0, 3.5)
+            new_views = max(50000, min(99999, int(base_views * multiplier)))
+        january_videos_list.append({
+            'views': new_views,
+            'is_viral': False,
+            'range': 'high'
+        })
+    
+    # Generate medium videos (10k-49k)
+    for _ in range(range_counts['medium']):
+        if view_ranges['medium']:
+            base_views = random.choice(view_ranges['medium'])
+            variation = random.uniform(0.7, 1.3)
+            new_views = max(10000, min(49999, int(base_views * variation)))
+        else:
+            # Sample from low and scale up
+            base_views = random.choice(view_ranges['low']) if view_ranges['low'] else 5000
+            multiplier = random.uniform(2.0, 8.0)
+            new_views = max(10000, min(49999, int(base_views * multiplier)))
+        january_videos_list.append({
+            'views': new_views,
+            'is_viral': False,
+            'range': 'medium'
+        })
+    
+    # Generate low videos (3k-9k)
+    for _ in range(range_counts['low']):
+        if view_ranges['low']:
+            base_views = random.choice(view_ranges['low'])
+            variation = random.uniform(0.7, 1.4)
+            new_views = max(3000, min(9999, int(base_views * variation)))
+        else:
+            # Sample from very low and scale up
+            base_views = random.choice(view_ranges['very_low']) if view_ranges['very_low'] else 1000
+            multiplier = random.uniform(3.0, 9.0)
+            new_views = max(3000, min(9999, int(base_views * multiplier)))
+        january_videos_list.append({
+            'views': new_views,
+            'is_viral': False,
+            'range': 'low'
+        })
+    
+    # Generate very low videos (<3k)
+    for _ in range(range_counts['very_low']):
+        if view_ranges['very_low']:
+            base_views = random.choice(view_ranges['very_low'])
+            variation = random.uniform(0.5, 2.0)
+            new_views = max(0, min(2999, int(base_views * variation)))
+        else:
+            # Generate from distribution
+            import math
+            new_views = int(random.lognormvariate(math.log(100), 1.0))  # Log-normal for realistic small views
+            new_views = max(0, min(2999, new_views))
+        january_videos_list.append({
+            'views': new_views,
+            'is_viral': False,
+            'range': 'very_low'
+        })
+    
+    # Shuffle to randomize order
+    random.shuffle(january_videos_list)
+    
+    # Distribute videos across creators proportionally to December
+    creator_video_counts = {}
+    for creator_name in december_data.keys():
+        creator_video_counts[creator_name] = len(december_data[creator_name])
+    
+    total_december_videos = sum(creator_video_counts.values())
+    if total_december_videos == 0:
+        total_december_videos = 1
+    
+    # Calculate target video counts per creator for January
+    january_creator_counts = {}
+    remaining_videos = target_total_videos
+    creators_list = list(creator_video_counts.keys())
+    
+    # Distribute proportionally
+    for creator_name in creators_list[:-1]:  # All but last
+        proportion = creator_video_counts[creator_name] / total_december_videos
+        count = max(1, int(target_total_videos * proportion))
+        january_creator_counts[creator_name] = count
+        remaining_videos -= count
+    
+    # Last creator gets remaining videos
+    if creators_list:
+        january_creator_counts[creators_list[-1]] = max(1, remaining_videos)
+    
+    # Assign videos to creators
+    january_data = {}
+    video_idx = 0
+    for creator_name, target_count in january_creator_counts.items():
+        creator_videos = []
+        for i in range(target_count):
+            if video_idx < len(january_videos_list):
+                video_data = january_videos_list[video_idx]
+                # Get platform from December data if available
+                platform = 'instagram'
+                if creator_name in december_data and december_data[creator_name]:
+                    platform = december_data[creator_name][0].get('platform', 'instagram')
+                
+                creator_videos.append({
+                    'views': video_data['views'],
+                    'platform': platform,
+                    'publishedDate': f'2026-01-{(i % 31) + 1:02d}',
+                    'is_viral': video_data['is_viral']
+                })
+                video_idx += 1
+        january_data[creator_name] = creator_videos
+    
+    # Verify January results
+    january_total = sum(len(videos) for videos in january_data.values())
     january_high_count = sum(
         1 for videos in january_data.values()
         for video in videos
         if video.get('views', 0) >= 100000
     )
-    january_percentage = january_high_count / total_videos if total_videos > 0 else 0
-    print(f"January result: {january_high_count}/{total_videos} videos >100k ({january_percentage*100:.2f}%)")
+    january_percentage = january_high_count / january_total if january_total > 0 else 0
+    
+    print(f"\nJanuary result: {january_high_count}/{january_total} videos >100k ({january_percentage*100:.2f}%)")
+    print(f"Total January videos: {january_total}")
     
     return january_data
 
@@ -437,10 +568,12 @@ def print_assumptions():
     print("   - Uses actual video counts and view data from December")
     
     print("\n4. JANUARY 2026 PROJECTION:")
-    print("   - Assumes same number of videos per creator as December")
-    print("   - Viral video assumption: 1.2% of videos >100k views become viral")
+    print("   - Target: 1600 total videos (scaled from December using statistical sampling)")
+    print("   - Videos distributed across creators proportionally to December")
+    print("   - Uses December's view distribution patterns for realistic sampling")
+    print("   - Viral video assumption: 1.2% of videos (>100k views) = 19 viral videos")
     print("   - Viral videos: 3x-10x view multiplier (randomly distributed)")
-    print("   - Regular videos: ±20% view variation")
+    print("   - Regular videos: sampled from December patterns with realistic variation")
     print("   - Random seed: 42 (for reproducibility)")
     
     print("\n5. CALCULATION METHOD:")
@@ -489,7 +622,7 @@ def main():
     print("\n" + "="*80)
     print("Projecting January 2026 data...")
     print("="*80)
-    january_data = project_january_2026_data(december_data, january_target_percentage=0.012)
+    january_data = project_january_2026_data(december_data, january_target_percentage=0.012, target_total_videos=1600)
     
     # Count viral videos
     total_viral = sum(

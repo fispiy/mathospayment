@@ -189,3 +189,4 @@ if __name__ == '__main__':
         total_views = sum(v['views'] for v in videos)
         print(f"{creator_name}: {len(videos)} videos, {total_views:,} total views")
 
+
